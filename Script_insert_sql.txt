@@ -1,0 +1,215 @@
+/*
+SCRIPT DE POVOAMENTO (INSERT) PARA O BANCO DE DADOS DO ZOOLÓGICO (Versão Oracle)
+*/
+
+-- Garantindo que o formato de data padrão da sessão seja o esperado
+ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS';
+
+-- =============================================
+-- 1. TABELAS INDEPENDENTES
+-- =============================================
+
+INSERT INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais)
+VALUES ('50000-001', 'Rua da Savana', 'Centro', 'Recife', 'Bloco A', '100', 'Brasil');
+INSERT INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais)
+VALUES ('50000-002', 'Avenida das Arvores', 'Boa Viagem', 'Recife', NULL, '1234', 'Brasil');
+INSERT INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais)
+VALUES ('51000-100', 'Rua dos Pinguins', 'Pina', 'Recife', 'Apto 202', '50B', 'Brasil');
+
+INSERT INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade)
+VALUES (1, 'Savana Africana', 5000.00, 'Terrestre', 28.5, 40.0);
+INSERT INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade)
+VALUES (2, 'Floresta Amazônica', 3500.00, 'Terrestre/Aquático', 26.0, 80.0);
+INSERT INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade)
+VALUES (3, 'Habitat Polar', 1000.00, 'Aquático/Gelo', -2.0, 50.0);
+
+INSERT INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+VALUES ('Comportamento de Leoes em Cativeiro', 'Estudo da adaptação social de felinos.', TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2025-01-15', 'YYYY-MM-DD'));
+INSERT INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+VALUES ('Reprodução de Araras Azuis', 'Técnicas de incentivo à reprodução para espécies ameaçadas.', TO_DATE('2023-06-01', 'YYYY-MM-DD'), NULL);
+
+INSERT INTO Tipo_Brinde (ID_TipoBrinde, Descricao)
+VALUES (1, 'Chaveiro de Pelúcia');
+INSERT INTO Tipo_Brinde (ID_TipoBrinde, Descricao)
+VALUES (2, 'Camiseta Estampada');
+
+INSERT INTO Procedimentos (ID_Procedimento, Nome)
+VALUES (101, 'Vacinação Anual');
+INSERT INTO Procedimentos (ID_Procedimento, Nome)
+VALUES (102, 'Exame de Sangue Completo');
+INSERT INTO Procedimentos (ID_Procedimento, Nome)
+VALUES (103, 'Tratamento Dentário');
+
+INSERT INTO Diagnostico (ID_Diagnostico, Descricao)
+VALUES (201, 'Desnutrição Leve');
+INSERT INTO Diagnostico (ID_Diagnostico, Descricao)
+VALUES (202, 'Gripe Aviária (H5N1)');
+INSERT INTO Diagnostico (ID_Diagnostico, Descricao)
+VALUES (203, 'Fratura na Pata Esquerda');
+
+INSERT INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome)
+VALUES (301, TO_DATE('2025-10-28', 'YYYY-MM-DD'), TO_DATE('14:00:00', 'HH24:MI:SS'), TO_DATE('15:00:00', 'HH24:MI:SS'), 'Alimentação', 'Alimentação dos Pinguins');
+INSERT INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome)
+VALUES (302, TO_DATE('2025-10-28', 'YYYY-MM-DD'), TO_DATE('10:00:00', 'HH24:MI:SS'), TO_DATE('11:30:00', 'HH24:MI:SS'), 'Tour', 'Tour Guiado pela Savana');
+
+INSERT INTO Atendimento_Veterinario (ID_AV, Data, Status, Local)
+VALUES (401, TO_DATE('2025-10-20 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Concluído', 'Clínica Principal');
+INSERT INTO Atendimento_Veterinario (ID_AV, Data, Status, Local)
+VALUES (402, TO_DATE('2025-10-25 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Agendado', 'Habitat (Floresta)');
+
+-- =============================================
+-- 2. PESSOAS (BASE PARA VISITANTES E FUNCIONÁRIOS)
+-- =============================================
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (1, '50000-002', 'Carlos Silva', '111.111.111-11', TO_DATE('1980-05-10', 'YYYY-MM-DD'), 'M');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (2, '51000-100', 'Ana Pereira', '222.222.222-22', TO_DATE('1990-11-20', 'YYYY-MM-DD'), 'F');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (3, '50000-001', 'Bruno Costa', '333.333.333-33', TO_DATE('1995-02-15', 'YYYY-MM-DD'), 'M');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (4, '50000-002', 'Daniela Martins', '444.444.444-44', TO_DATE('2003-07-30', 'YYYY-MM-DD'), 'F');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (5, '51000-100', 'Eduardo Lima', '555.555.555-55', TO_DATE('1988-01-05', 'YYYY-MM-DD'), 'M');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (6, '50000-001', 'Fernanda Souza', '666.666.666-66', TO_DATE('1992-09-12', 'YYYY-MM-DD'), 'F');
+INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo)
+VALUES (7, '50000-002', 'Gabriel Alves', '777.777.777-77', TO_DATE('2018-03-01', 'YYYY-MM-DD'), 'M');
+
+-- =============================================
+-- 3. ANIMAIS
+-- =============================================
+INSERT INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude)
+VALUES (1001, 1, 'Simba', 'M', 5, 'Carne Bovina', 'Gripe leve em 2024.');
+INSERT INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude)
+VALUES (1002, 2, 'Kaa', 'F', 3, 'Pequenos roedores', 'Troca de pele regular.');
+INSERT INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude)
+VALUES (1003, 3, 'Pingu', 'M', 2, 'Peixe (Sardinha)', 'Saudável.');
+
+-- =============================================
+-- 4. HIERARQUIA PESSOA (ESPECIALIZAÇÃO)
+-- =============================================
+
+-- Visitantes
+-- Ana Pereira
+INSERT INTO Visitante (id_pes) VALUES (2);
+-- Fernanda Souza
+INSERT INTO Visitante (id_pes) VALUES (6);
+-- Gabriel Alves (Criança)
+INSERT INTO Visitante (id_pes) VALUES (7);
+
+-- Criança
+-- (id_pulseira, id_visitante (de Crianca), nome, idade)
+-- Gabriel (id_pessoa 7) é um visitante
+INSERT INTO Crianca (id_pulseira, id_visitante, nome, idade)
+VALUES (9001, 7, 'Gabriel Alves', 7);
+
+-- Funcionários (Base)
+-- (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim)
+-- Carlos Silva (Supervisor Geral / Veterinário)
+INSERT INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim)
+VALUES (1, NULL, NULL, TO_DATE('2010-03-15', 'YYYY-MM-DD'), 'CLT', 12000.00, TO_DATE('2010-03-15', 'YYYY-MM-DD'), NULL);
+-- Bruno Costa (Cuidador)
+INSERT INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim)
+VALUES (3, NULL, 1, TO_DATE('2018-05-20', 'YYYY-MM-DD'), 'CLT', 4500.00, TO_DATE('2018-05-20', 'YYYY-MM-DD'), NULL);
+-- Daniela Martins (Estagiária)
+INSERT INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim)
+VALUES (4, NULL, 1, TO_DATE('2025-02-01', 'YYYY-MM-DD'), 'Estágio', 1200.00, TO_DATE('2025-02-01', 'YYYY-MM-DD'), TO_DATE('2026-02-01', 'YYYY-MM-DD'));
+-- Eduardo Lima (Atendente)
+INSERT INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim)
+VALUES (5, NULL, 1, TO_DATE('2020-11-01', 'YYYY-MM-DD'), 'CLT', 3800.00, TO_DATE('2020-11-01', 'YYYY-MM-DD'), NULL);
+
+-- Adicionando o auto-relacionamento de supervisor (que falhou na criação)
+UPDATE Funcionario SET id_supervisor = 1 WHERE id_pes IN (3, 4, 5);
+
+-- Subtipos de Funcionário
+-- Carlos Silva
+INSERT INTO Veterinario (id_func, crmv)
+VALUES (1, 'CRMV-PE 1234');
+-- Bruno Costa
+INSERT INTO Cuidador (id_func, area_certificacao)
+VALUES (3, 'Manejo de Grandes Felinos');
+-- Eduardo Lima
+INSERT INTO Atendente (id_func, guiche, turno, setor_atendimento)
+VALUES (5, 1, 'Manhã', 'Bilheteria Principal');
+
+-- Tratamento da Relação Circular Estagiário <-> Funcionário
+-- Daniela Martins
+INSERT INTO Estagiario (id_func, instituicao_ensino)
+VALUES (4, 'Universidade Federal de Pernambuco');
+
+-- Agora atualiza o funcionário para apontar para seu registro de estagiário
+UPDATE Funcionario SET id_estagiario = 4 WHERE id_pes = 4;
+
+-- =============================================
+-- 5. TABELAS DEPENDENTES (NÍVEL 2)
+-- =============================================
+
+-- Ingresso (Vendido por Atendente 5, Comprado por Visitante 2 e 6)
+INSERT INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor)
+VALUES (10001, 2, 5, 'Cartão de Crédito', TO_DATE('2025-10-27 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 1, TO_DATE('2025-10-28', 'YYYY-MM-DD'), 'Adulto', 50.00);
+INSERT INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor)
+VALUES (10002, 6, 5, 'PIX', TO_DATE('2025-10-27 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 2, TO_DATE('2025-10-29', 'YYYY-MM-DD'), 'Adulto', 100.00);
+
+-- Brinde (Associado ao Ingresso 10002)
+INSERT INTO Brinde (ID_Brinde, ID_TipoBrinde, ID_Compra)
+VALUES (501, 1, 10002);
+
+-- Estagio (Para Estagiário 4)
+INSERT INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area)
+VALUES (701, 4, 'Ativo', TO_DATE('2025-02-01', 'YYYY-MM-DD'), TO_DATE('2026-02-01', 'YYYY-MM-DD'), 12, 'Veterinária');
+
+-- Consulta (Animal 1001 + Veterinário 1)
+INSERT INTO Consulta (ID_Consulta, id_animal, id_veterinario, Data_E_Hora, local, status)
+VALUES (1, 1001, 1, TO_DATE('2025-10-20 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Clínica Principal', 'Concluído');
+
+-- Historico_Estadia
+INSERT INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia)
+VALUES (1001, 1, TO_DATE('2020-01-10', 'YYYY-MM-DD'), NULL, 'Chegada ao zoológico.');
+INSERT INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia)
+VALUES (1002, 2, TO_DATE('2022-03-05', 'YYYY-MM-DD'), NULL, 'Chegada ao zoológico.');
+
+-- =============================================
+-- 6. TABELAS DE ASSOCIAÇÃO (JUNÇÃO)
+-- =============================================
+
+-- Atendimento_Veterinario (ID 401)
+-- Atendimento 401 teve diagnóstico de Desnutrição Leve
+INSERT INTO Atendimento_Diagnostico (ID_AV, ID_Diagnostico)
+VALUES (401, 201);
+-- Atendimento 401 teve Exame de Sangue
+INSERT INTO Atendimento_Procedimento (ID_AV, ID_Procedimento)
+VALUES (401, 102);
+-- Atendimento 401 foi no animal Simba
+INSERT INTO Atendimento_Animal (ID_AV, ID_Animal)
+VALUES (401, 1001);
+-- Atendimento 401 foi feito pelo Vet Carlos
+INSERT INTO Atendimento_Veterinario_Pessoa (ID_AV, ID_Veterinario)
+VALUES (401, 1);
+
+-- Visitante (Ana, id 2) participa da Atividade (Tour, id 302)
+INSERT INTO Visitante_Participa_Atividade (id_visitante, id_atividade, feedback)
+VALUES (2, 302, 'O guia foi excelente, aprendi muito!');
+
+-- Criança (Gabriel, pulseira 9001, visitante 7) participa da Atividade (Pinguins, id 301)
+INSERT INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade, feedback)
+VALUES (9001, 7, 301, 'Amei ver os pinguins comendo!');
+
+-- Animal (Simba, id 1001) participa do Projeto (Leoes, titulo '...')
+INSERT INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao)
+VALUES (1001, 'Comportamento de Leoes em Cativeiro', 'Indivíduo principal', 'Diária');
+
+-- Consulta (ID 1) teve Procedimento (Vacinação, 101)
+INSERT INTO Consulta_Procedimento (ID_Consulta, ID_Procedimento)
+VALUES (1, 101);
+
+-- Cuidador (Bruno, id 3) cuida do Animal (Simba, id 1001)
+INSERT INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes)
+VALUES (1001, 3, TO_DATE('2019-01-01', 'YYYY-MM-DD'), 'Animal dócil, mas requer atenção durante alimentação.');
+
+-- (Educador e Pesquisador não foram criados nesta rodada, então Educador_Gera_Atividade e Pesquisador_Desenvolve_ProjetoDePesquisa ficam vazios)
+
+-- =============================================
+-- FIM
+-- =============================================
+COMMIT;
+
