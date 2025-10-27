@@ -1,0 +1,356 @@
+/*
+SCRIPT DE CRIAÇÃO DE TABELAS PARA O BANCO DE DADOS DO ZOOLÓGICO (Versão Oracle)
+Ordem de execução:
+1. Tabelas independentes (sem chaves estrangeiras)
+2. Tabelas dependentes (Nível 1)
+3. Tabelas de especialização (Pessoa -> Funcionário/Visitante)
+4. Tabelas de associação (junção)
+*/
+
+-- =============================================
+-- 1. TABELAS INDEPENDENTES
+-- =============================================
+CREATE TABLE Endereco (
+    cep VARCHAR2(9) PRIMARY KEY,
+    rua VARCHAR2(255) NOT NULL,
+    bairro VARCHAR2(255),
+    cidade VARCHAR2(255) NOT NULL,
+    complemento VARCHAR2(255),
+    numero VARCHAR2(20), -- VARCHAR2 para casos como '100A', 'S/N'
+    pais VARCHAR2(100) NOT NULL
+);
+
+CREATE TABLE Habitat (
+    cod INT PRIMARY KEY,
+    nome VARCHAR2(255) NOT NULL,
+    espaco_disponivel NUMBER(10, 2),
+    tipo VARCHAR2(100),
+    temperatura NUMBER(5, 2),
+    umidade NUMBER(5, 2)
+);
+
+CREATE TABLE Projeto_Pesquisa (
+    titulo VARCHAR2(255) PRIMARY KEY,
+    linha_pesquisa CLOB,
+    data_inicio DATE,
+    data_fim DATE
+);
+
+CREATE TABLE Tipo_Brinde (
+    ID_TipoBrinde INT PRIMARY KEY,
+    Descricao CLOB
+);
+
+CREATE TABLE Procedimentos (
+    ID_Procedimento INT PRIMARY KEY,
+    Nome VARCHAR2(255) NOT NULL
+);
+
+CREATE TABLE Diagnostico (
+    ID_Diagnostico INT PRIMARY KEY,
+    Descricao CLOB NOT NULL
+);
+
+CREATE TABLE Atividade (
+    cod INT PRIMARY KEY,
+    data DATE,
+    hora_inicio DATE, -- No Oracle, DATE armazena data e hora. Use-o para TIME.
+    hora_fim DATE, -- No Oracle, DATE armazena data e hora. Use-o para TIME.
+    tipo VARCHAR2(100),
+    nome VARCHAR2(255) NOT NULL
+);
+
+CREATE TABLE Atendimento_Veterinario (
+    ID_AV INT PRIMARY KEY,
+    Data DATE NOT NULL, -- No Oracle, DATE armazena data e hora (substitui DATETIME)
+    Status VARCHAR2(100),
+    Local VARCHAR2(255)
+);
+
+-- =============================================
+-- 2. TABELAS DEPENDENTES (NÍVEL 1)
+-- =============================================
+
+CREATE TABLE Pessoa (
+    id_pessoa INT PRIMARY KEY,
+    cep VARCHAR2(9),
+    nome VARCHAR2(255) NOT NULL,
+    cpf VARCHAR2(14) UNIQUE NOT NULL,
+    data_nascimento DATE,
+    sexo CHAR(1),
+    FOREIGN KEY (cep) REFERENCES Endereco(cep)
+);
+
+CREATE TABLE Animal (
+    id_animal INT PRIMARY KEY,
+    id_habitat INT,
+    nome VARCHAR2(255) NOT NULL,
+    sexo CHAR(1),
+    idade INT,
+    dieta CLOB,
+    historico_saude CLOB,
+    FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
+);
+
+CREATE TABLE Brinde (
+    ID_Brinde INT PRIMARY KEY,
+    ID_TipoBrinde INT,
+    ID_Compra INT, -- Assumindo que ID_Compra se refere a Ingresso(cod)
+    FOREIGN KEY (ID_TipoBrinde) REFERENCES Tipo_Brinde(ID_TipoBrinde)
+    -- A FK para ID_Compra (Ingresso) será adicionada após a criação de Ingresso
+);
+
+-- =============================================
+-- 3. HIERARQUIA PESSOA (ESPECIALIZAÇÃO)
+-- =============================================
+
+CREATE TABLE Visitante (
+    id_pes INT PRIMARY KEY,
+    FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
+);
+
+CREATE TABLE Crianca (
+    id_pulseira INT NOT NULL,
+    id_visitante INT NOT NULL,
+    nome VARCHAR2(255) NOT NULL,
+    idade INT,
+    PRIMARY KEY (id_pulseira, id_visitante), -- Chave primária composta
+    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes)
+);
+
+/* A relação entre Funcionário e Estagiario é circular.
+   1. Criamos Funcionário permitindo 'id_estagiario' nulo (sem FK).
+   2. Adicionamos o auto-relacionamento (supervisor).
+   3. Criamos Estagiario (que depende de Funcionário).
+   4. Adicionamos a FK 'id_estagiario' em Funcionário (com ALTER TABLE).
+*/
+
+-- CORREÇÃO APLICADA AQUI (removida a FK de supervisor)
+CREATE TABLE Funcionario (
+    id_pes INT PRIMARY KEY,
+    id_estagiario INT NULL, -- FK será adicionada abaixo
+    id_supervisor INT,
+    data_admissao DATE NOT NULL,
+    tipo VARCHAR2(100), -- CLT, Terceirizado, etc.
+    salario NUMBER(10, 2),
+    data_inicio DATE,
+    data_fim DATE,
+    FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
+    -- O auto-relacionamento (supervisor) será adicionado abaixo
+);
+
+-- CORREÇÃO APLICADA AQUI (Adicionando a FK de supervisor separadamente)
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_func_supervisor
+FOREIGN KEY (id_supervisor) REFERENCES Funcionario(id_pes);
+
+
+CREATE TABLE Estagiario (
+    id_func INT PRIMARY KEY,
+    instituicao_ensino VARCHAR2(255),
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+-- Adicionando a FK faltante para completar a dependência circular
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_func_estagiario
+FOREIGN KEY (id_estagiario) REFERENCES Estagiario(id_func);
+
+
+CREATE TABLE Veterinario (
+    id_func INT PRIMARY KEY,
+    crmv VARCHAR2(50) UNIQUE NOT NULL,
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+CREATE TABLE Educador (
+    id_func INT PRIMARY KEY,
+    area_formacao VARCHAR2(255),
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+CREATE TABLE Cuidador (
+    id_func INT PRIMARY KEY,
+    area_certificacao VARCHAR2(255),
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+CREATE TABLE Pesquisador (
+    id_func INT PRIMARY KEY,
+    area_pesquisa VARCHAR2(255),
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+CREATE TABLE Atendente (
+    id_func INT PRIMARY KEY,
+    guiche INT,
+    turno VARCHAR2(50),
+    setor_atendimento VARCHAR2(100),
+    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+);
+
+-- =============================================
+-- 4. TABELAS DEPENDENTES (NÍVEL 2)
+-- =============================================
+
+CREATE TABLE Ingresso (
+    cod INT PRIMARY KEY,
+    id_visitante INT NOT NULL,
+    id_atendente INT NOT NULL,
+    forma_pagamento VARCHAR2(100),
+    data_compra DATE NOT NULL, -- No Oracle, DATE armazena data e hora
+    quantidade INT,
+    data DATE, -- Data da visita
+    tipo VARCHAR2(100),
+    valor NUMBER(10, 2),
+    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
+    FOREIGN KEY (id_atendente) REFERENCES Atendente(id_func)
+);
+
+-- Adicionando a FK de Brinde para Ingresso
+ALTER TABLE Brinde
+ADD CONSTRAINT fk_brinde_compra
+FOREIGN KEY (ID_Compra) REFERENCES Ingresso(cod);
+
+
+CREATE TABLE Estagio (
+    cod INT PRIMARY KEY,
+    id_estagiario INT NOT NULL,
+    status VARCHAR2(100),
+    data_inicio DATE,
+    data_fim DATE,
+    duracao INT, -- em meses
+    area VARCHAR2(100),
+    FOREIGN KEY (id_estagiario) REFERENCES Estagiario(id_func)
+);
+
+/* RESOLVENDO AMBIGUIDADE E SINTAXE ORACLE:
+   A tabela 'Consulta' não possui um ID, mas 'Consulta_Procedimento' 
+   referencia 'ID_Consulta'.
+   Vamos adicionar 'ID_Consulta' como PK autoincrementável (sintaxe Oracle).
+*/
+-- CORREÇÃO APLICADA AQUI (Comentário inválido removido)
+CREATE TABLE Consulta (
+    ID_Consulta INT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY, -- Chave adicionada (Sintaxe Oracle)
+    id_animal INT NOT NULL,
+    id_veterinario INT NOT NULL,
+    Data_E_Hora DATE NOT NULL, -- No Oracle, DATE armazena data e hora
+    local VARCHAR2(255),
+    status VARCHAR2(100),
+    UNIQUE(id_animal, id_veterinario, Data_E_Hora), -- Chave candidata original
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (id_veterinario) REFERENCES Veterinario(id_func)
+);
+
+CREATE TABLE Historico_Estadia (
+    id_animal INT NOT NULL,
+    id_habitat INT NOT NULL,
+    Data_entrada DATE NOT NULL,
+    Data_saida DATE,
+    motivo_transferencia CLOB,
+    PRIMARY KEY (id_animal, id_habitat, Data_entrada),
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
+);
+
+-- =============================================
+-- 5. TABELAS DE ASSOCIAÇÃO (JUNÇÃO)
+-- =============================================
+
+CREATE TABLE Atendimento_Diagnostico (
+    ID_AV INT NOT NULL,
+    ID_Diagnostico INT NOT NULL,
+    PRIMARY KEY (ID_AV, ID_Diagnostico),
+    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
+    FOREIGN KEY (ID_Diagnostico) REFERENCES Diagnostico(ID_Diagnostico)
+);
+
+CREATE TABLE Atendimento_Procedimento (
+    ID_AV INT NOT NULL,
+    ID_Procedimento INT NOT NULL,
+    PRIMARY KEY (ID_AV, ID_Procedimento),
+    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
+    FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
+);
+
+CREATE TABLE Atendimento_Animal (
+    ID_AV INT NOT NULL,
+    ID_Animal INT NOT NULL,
+    PRIMARY KEY (ID_AV, ID_Animal),
+    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
+    FOREIGN KEY (ID_Animal) REFERENCES Animal(id_animal)
+);
+
+CREATE TABLE Atendimento_Veterinario_Pessoa (
+    ID_AV INT NOT NULL,
+    ID_Veterinario INT NOT NULL, -- Refere-se a Veterinario(id_func)
+    PRIMARY KEY (ID_AV, ID_Veterinario),
+    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
+    FOREIGN KEY (ID_Veterinario) REFERENCES Veterinario(id_func)
+);
+
+CREATE TABLE Visitante_Participa_Atividade (
+    id_visitante INT NOT NULL,
+    id_atividade INT NOT NULL,
+    feedback CLOB,
+    PRIMARY KEY (id_visitante, id_atividade),
+    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
+    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+);
+
+CREATE TABLE Animal_Participa_ProjetoDePesquisa (
+    id_animal INT NOT NULL,
+    titulo_projeto VARCHAR2(255) NOT NULL,
+    papel_no_projeto VARCHAR2(255),
+    frequencia_observacao VARCHAR2(100),
+    PRIMARY KEY (id_animal, titulo_projeto),
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
+);
+
+CREATE TABLE Consulta_Procedimento (
+    ID_Consulta INT NOT NULL,
+    ID_Procedimento INT NOT NULL,
+    PRIMARY KEY (ID_Consulta, ID_Procedimento),
+    FOREIGN KEY (ID_Consulta) REFERENCES Consulta(ID_Consulta),
+    FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
+);
+
+CREATE TABLE Educador_Gera_Atividade (
+    id_educador INT NOT NULL,
+    id_atividade INT NOT NULL,
+    PRIMARY KEY (id_educador, id_atividade),
+    FOREIGN KEY (id_educador) REFERENCES Educador(id_func),
+    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+);
+
+CREATE TABLE Crianca_participa_atividade (
+    id_pulseira INT NOT NULL,
+    id_visitante INT NOT NULL,
+    id_atividade INT NOT NULL,
+    feedback CLOB,
+    PRIMARY KEY (id_pulseira, id_visitante, id_atividade),
+    FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
+    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+);
+
+CREATE TABLE Cuidador_Cuida_Animal (
+    id_animal INT NOT NULL,
+    id_cuidador INT NOT NULL,
+    data_inicio_responsabilidade DATE,
+    observacoes CLOB,
+    PRIMARY KEY (id_animal, id_cuidador),
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (id_cuidador) REFERENCES Cuidador(id_func)
+);
+
+CREATE TABLE Pesquisador_Desenvolve_ProjetoDePesquisa (
+    id_pesquisador INT NOT NULL,
+    titulo_projeto VARCHAR2(255) NOT NULL,
+    funcao VARCHAR2(255),
+    data_entrada DATE,
+    PRIMARY KEY (id_pesquisador, titulo_projeto),
+    FOREIGN KEY (id_pesquisador) REFERENCES Pesquisador(id_func),
+    FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
+);
+
