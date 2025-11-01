@@ -37,7 +37,7 @@ DEFINE ATIV_KAA = 304
 DEFINE ATIV_FLORESTA = 305
 DEFINE ATIV_NOVA_EDU = 306
 
--- IDs de Pessoas (Existentes no script anterior)
+-- IDs de Pessoas 
 DEFINE FUNC_CARLOS_VET = 1
 DEFINE VIS_ANA = 2
 DEFINE FUNC_BRUNO_CUID = 3
@@ -51,14 +51,14 @@ DEFINE VIS_JULIA_CRI = 10
 DEFINE FUNC_LAURA_EDUC = 11
 DEFINE FUNC_MARCOS_CUID = 12
 
--- IDs de Animais (Existentes no script anterior)
+-- IDs de Animais 
 DEFINE ANIMAL_SIMBA = 1001
 DEFINE ANIMAL_KAA = 1002
 DEFINE ANIMAL_PINGU = 1003
 DEFINE ANIMAL_REX = 1004
 DEFINE ANIMAL_NALA = 1005
 
--- IDs de Consulta (Existentes no script anterior)
+-- IDs de Consulta
 DEFINE CONS_SIMBA_1 = 1
 DEFINE CONS_REX_2 = 2
 
