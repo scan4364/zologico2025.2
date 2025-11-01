@@ -1,5 +1,6 @@
 /*
 SCRIPT DE CRIAÇÃO DE TABELAS PARA O BANCO DE DADOS DO ZOOLÓGICO (Versão Oracle)
+*** VERSÃO CORRIGIDA ***
 Ordem de execução:
 1. Tabelas independentes (sem chaves estrangeiras)
 2. Tabelas dependentes (Nível 1)
@@ -83,7 +84,7 @@ CREATE TABLE Animal (
 
 CREATE TABLE Brinde (
     ID_Brinde INT PRIMARY KEY,
-    Nome VARCHAR2(255) NOT NULL, /* CORREÇÃO APLICADA AQUI: Alterado de CLOB para VARCHAR2 */
+    Nome VARCHAR2(255) NOT NULL,
     Descrição CLOB
 );
 
@@ -220,12 +221,20 @@ CREATE TABLE Historico_Estadia (
 -- 5. TABELAS DE ASSOCIAÇÃO (JUNÇÃO)
 -- =============================================
 
+/* --- CORREÇÃO LÓGICA 1: Tabela Atendimento_Veterinario ---
+   Adicionada uma CHAVE PRIMÁRIA composta (id_animal, crmv_veterinario, Data)
+   para identificar unicamente um atendimento.
+   (Assumindo que um veterinário não atende o mesmo animal mais de uma vez na MESMA DATA.
+    Se puder, a coluna 'Data' deveria ser TIMESTAMP e incluída na PK)
+*/
 CREATE TABLE Atendimento_Veterinario (
     id_animal INT NOT NULL,
-    crmv_veterinario VARCHAR2(50) NOT NULL, /* CORREÇÃO APLICADA AQUI: Alterado de INT para VARCHAR2(50) */
+    crmv_veterinario VARCHAR2(50) NOT NULL,
     Data DATE NOT NULL, 
-    Diagnostico CLOB, /* CORREÇÃO APLICADA AQUI: Vírgula adicionada */
-
+    Diagnostico CLOB,
+    
+    PRIMARY KEY (id_animal, crmv_veterinario, Data), -- PK Adicionada
+    
     FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
     FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv)
 );
@@ -249,16 +258,29 @@ CREATE TABLE Animal_Participa_ProjetoDePesquisa (
     FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
 );
 
+/* --- CORREÇÃO LÓGICA 2: Tabela Consulta_Realiza_Procedimento ---
+   Esta tabela agora faz referência à consulta específica (PK da tabela Atendimento_Veterinario)
+   em que o procedimento foi realizado.
+*/
 CREATE TABLE Consulta_Realiza_Procedimento (
+    -- Colunas da FK para o Atendimento:
     id_animal INT NOT NULL,
-    crmv_veterinario VARCHAR2(50) NOT NULL, /* CORREÇÃO APLICADA AQUI: Alterado de INT para VARCHAR2(50) */
+    crmv_veterinario VARCHAR2(50) NOT NULL,
+    Data_Atendimento DATE NOT NULL, -- Coluna que faltava
+    
+    -- Coluna do Procedimento:
     ID_Procedimento INT NOT NULL,
-    PRIMARY KEY (id_animal, ID_Procedimento,crmv_veterinario),
+    
+    -- CHAVE PRIMÁRIA COMPOSTA:
+    PRIMARY KEY (id_animal, crmv_veterinario, Data_Atendimento, ID_Procedimento),
 
-    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv),
+    -- CHAVE ESTRANGEIRA COMPOSTA (Referencia o Atendimento):
+    FOREIGN KEY (id_animal, crmv_veterinario, Data_Atendimento) 
+        REFERENCES Atendimento_Veterinario(id_animal, crmv_veterinario, Data),
+        
     FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
 );
+
 
 CREATE TABLE Educador_Gera_Atividade (
     id_educador INT NOT NULL,
@@ -281,7 +303,7 @@ CREATE TABLE Crianca_recebe_brinde (
     id_pulseira INT NOT NULL,
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
-    ID_Brinde INT NOT NULL, /* CORREÇÃO APLICADA AQUI: Corrigido erro de digitação "ID_BrindeINT" */
+    ID_Brinde INT NOT NULL,
     PRIMARY KEY (id_pulseira, id_visitante, id_atividade, ID_Brinde),
     FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
     FOREIGN KEY (id_atividade) REFERENCES Atividade(cod),
