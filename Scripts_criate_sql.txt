@@ -36,20 +36,14 @@ CREATE TABLE Projeto_Pesquisa (
     data_fim DATE
 );
 
-CREATE TABLE Tipo_Brinde (
-    ID_TipoBrinde INT PRIMARY KEY,
-    Descricao CLOB
-);
 
 CREATE TABLE Procedimentos (
     ID_Procedimento INT PRIMARY KEY,
-    Nome VARCHAR2(255) NOT NULL
+    Nome VARCHAR2(255) NOT NULL,
+    Descrição CLOB
 );
 
-CREATE TABLE Diagnostico (
-    ID_Diagnostico INT PRIMARY KEY,
-    Descricao CLOB NOT NULL
-);
+
 
 CREATE TABLE Atividade (
     cod INT PRIMARY KEY,
@@ -60,12 +54,7 @@ CREATE TABLE Atividade (
     nome VARCHAR2(255) NOT NULL
 );
 
-CREATE TABLE Atendimento_Veterinario (
-    ID_AV INT PRIMARY KEY,
-    Data DATE NOT NULL, -- No Oracle, DATE armazena data e hora (substitui DATETIME)
-    Status VARCHAR2(100),
-    Local VARCHAR2(255)
-);
+
 
 -- =============================================
 -- 2. TABELAS DEPENDENTES (NÍVEL 1)
@@ -94,10 +83,8 @@ CREATE TABLE Animal (
 
 CREATE TABLE Brinde (
     ID_Brinde INT PRIMARY KEY,
-    ID_TipoBrinde INT,
-    ID_Compra INT, -- Assumindo que ID_Compra se refere a Ingresso(cod)
-    FOREIGN KEY (ID_TipoBrinde) REFERENCES Tipo_Brinde(ID_TipoBrinde)
-    -- A FK para ID_Compra (Ingresso) será adicionada após a criação de Ingresso
+    Nome CLOB,
+    Descrição CLOB
 );
 
 -- =============================================
@@ -207,10 +194,6 @@ CREATE TABLE Ingresso (
     FOREIGN KEY (id_atendente) REFERENCES Atendente(id_func)
 );
 
--- Adicionando a FK de Brinde para Ingresso
-ALTER TABLE Brinde
-ADD CONSTRAINT fk_brinde_compra
-FOREIGN KEY (ID_Compra) REFERENCES Ingresso(cod);
 
 
 CREATE TABLE Estagio (
@@ -257,37 +240,16 @@ CREATE TABLE Historico_Estadia (
 -- 5. TABELAS DE ASSOCIAÇÃO (JUNÇÃO)
 -- =============================================
 
-CREATE TABLE Atendimento_Diagnostico (
-    ID_AV INT NOT NULL,
-    ID_Diagnostico INT NOT NULL,
-    PRIMARY KEY (ID_AV, ID_Diagnostico),
-    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
-    FOREIGN KEY (ID_Diagnostico) REFERENCES Diagnostico(ID_Diagnostico)
+CREATE TABLE Atendimento_Veterinario (
+    id_animal INT NOT NULL,
+    crmv_veterinario INT NOT NULL,
+    Data DATE NOT NULL, -- No Oracle, DATE armazena data e hora (substitui DATETIME)
+    Diagnostico CLOB
+
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv)
 );
 
-CREATE TABLE Atendimento_Procedimento (
-    ID_AV INT NOT NULL,
-    ID_Procedimento INT NOT NULL,
-    PRIMARY KEY (ID_AV, ID_Procedimento),
-    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
-    FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
-);
-
-CREATE TABLE Atendimento_Animal (
-    ID_AV INT NOT NULL,
-    ID_Animal INT NOT NULL,
-    PRIMARY KEY (ID_AV, ID_Animal),
-    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
-    FOREIGN KEY (ID_Animal) REFERENCES Animal(id_animal)
-);
-
-CREATE TABLE Atendimento_Veterinario_Pessoa (
-    ID_AV INT NOT NULL,
-    ID_Veterinario INT NOT NULL, -- Refere-se a Veterinario(id_func)
-    PRIMARY KEY (ID_AV, ID_Veterinario),
-    FOREIGN KEY (ID_AV) REFERENCES Atendimento_Veterinario(ID_AV),
-    FOREIGN KEY (ID_Veterinario) REFERENCES Veterinario(id_func)
-);
 
 CREATE TABLE Visitante_Participa_Atividade (
     id_visitante INT NOT NULL,
@@ -308,11 +270,14 @@ CREATE TABLE Animal_Participa_ProjetoDePesquisa (
     FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
 );
 
-CREATE TABLE Consulta_Procedimento (
-    ID_Consulta INT NOT NULL,
+CREATE TABLE Consulta_Realiza_Procedimento (
+    id_animal INT NOT NULL,
+    crmv_veterinario INT NOT NULL,
     ID_Procedimento INT NOT NULL,
-    PRIMARY KEY (ID_Consulta, ID_Procedimento),
-    FOREIGN KEY (ID_Consulta) REFERENCES Consulta(ID_Consulta),
+    PRIMARY KEY (id_animal, ID_Procedimento,crmv_veterinario),
+
+    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv)
     FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
 );
 
