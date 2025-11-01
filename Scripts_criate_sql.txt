@@ -212,7 +212,7 @@ CREATE TABLE Historico_Estadia (
     Data_entrada DATE NOT NULL,
     Data_saida DATE,
     motivo_transferencia CLOB,
-    PRIMARY KEY (id_animal, id_habitat, Data_entrada),
+    PRIMARY KEY (id_animal, id_habitat),
     FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
     FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
 );
