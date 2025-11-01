@@ -246,7 +246,6 @@ CREATE TABLE Atendimento_Veterinario (
 CREATE TABLE Visitante_Participa_Atividade (
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
-    feedback CLOB,
     PRIMARY KEY (id_visitante, id_atividade),
     FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
     FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
@@ -285,7 +284,6 @@ CREATE TABLE Crianca_participa_atividade (
     id_pulseira INT NOT NULL,
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
-    feedback CLOB,
     PRIMARY KEY (id_pulseira, id_visitante, id_atividade),
     FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
     FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
@@ -296,7 +294,6 @@ CREATE TABLE Crianca_recebe_brinde (
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
     ID_Brinde INT NOT NULL, /* CORREÇÃO APLICADA AQUI: Corrigido erro de digitação "ID_BrindeINT" */
-    feedback CLOB,
     PRIMARY KEY (id_pulseira, id_visitante, id_atividade, ID_Brinde),
     FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
     FOREIGN KEY (id_atividade) REFERENCES Atividade(cod),
