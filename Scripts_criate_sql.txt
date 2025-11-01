@@ -277,7 +277,7 @@ CREATE TABLE Consulta_Realiza_Procedimento (
     PRIMARY KEY (id_animal, ID_Procedimento,crmv_veterinario),
 
     FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv)
+    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv),
     FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
 );
 
@@ -297,6 +297,18 @@ CREATE TABLE Crianca_participa_atividade (
     PRIMARY KEY (id_pulseira, id_visitante, id_atividade),
     FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
     FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+);
+
+CREATE TABLE Crianca_recebe_brinde (
+    id_pulseira INT NOT NULL,
+    id_visitante INT NOT NULL,
+    id_atividade INT NOT NULL,
+    ID_BrindeINT NOT NULL,
+    feedback CLOB,
+    PRIMARY KEY (id_pulseira, id_visitante, id_atividade, ID_Brinde),
+    FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
+    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod),
+    FOREIGN KEY (ID_Brinde) REFERENCES Brinde(ID_Brinde)
 );
 
 CREATE TABLE Cuidador_Cuida_Animal (
