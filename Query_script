@@ -16,3 +16,107 @@ WHERE id_pes = 100;
 SELECT tipo, salario FROM Funcionario
 WHERE salario >= 4000;
 
+-- Codigo celso Anjos
+CREATE TABLE Audi_Funci(
+    audi_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	funId INT,
+    nome VARCHAR2(255),
+	data_aud DATE 
+);
+
+ALTER TABLE Audi_Funci
+ADD descricao VARCHAR2(255);
+
+CREATE VIEW Audi_Funci_Hora AS 
+	SELECT 
+		F.id_pes AS id_pes,
+		P.nome AS nome, 
+		SYSDATE AS data_hora_acesso 
+		FROM Funcionario F
+		INNER JOIN Pessoa P ON F.id_pes = P.id_pessoa; 
+    
+
+INSERT INTO Audi_Funci(funId, nome, data_aud) 
+	SELECT 
+    	id_pes,
+    	nome,
+    	data_hora_acesso
+    FROM Audi_Funci_Hora;
+
+CREATE OR REPLACE TRIGGER trg_audi_funci_all
+AFTER INSERT OR UPDATE OR DELETE ON Funcionario
+FOR EACH ROW
+BEGIN
+
+  IF INSERTING THEN
+    INSERT INTO Audi_Funci(funId, nome, data_aud, descricao)
+    VALUES(
+      :NEW.id_pes,
+      NVL((SELECT nome FROM Pessoa WHERE id_pessoa = :NEW.id_pes), 'NOME_NAO_ENCONTRADO'),
+      SYSDATE,
+      'INSERT'
+    );
+  END IF;
+
+  IF UPDATING THEN
+    INSERT INTO Audi_Funci(funId, nome, data_aud, descricao)
+    VALUES(
+      :NEW.id_pes,
+      NVL((SELECT nome FROM Pessoa WHERE id_pessoa = :NEW.id_pes), 'NOME_NAO_ENCONTRADO'),
+      SYSDATE,
+      'UPDATE'
+    );
+  END IF;
+
+  IF DELETING THEN
+    INSERT INTO Audi_Funci(funId, nome, data_aud, descricao)
+    VALUES(
+      :OLD.id_pes,
+      NVL((SELECT nome FROM Pessoa WHERE id_pessoa = :OLD.id_pes), 'NOME_NAO_ENCONTRADO'),
+      SYSDATE,
+      'DELETE'
+    );
+  END IF;
+END;
+/
+
+SELECT nome from Pessoa P
+	INNER JOIN Funcionario V ON P.id_pessoa = V.id_pes
+	ORDER BY nome ASC;
+
+SELECT COUNT(*) FROM Animal 
+	GROUP BY idade
+	HAVING COUNT(*) < 1;
+
+SELECT COUNT(*) AS Quatidade FROM Animal 
+
+SELECT 'Mais Velho' AS tipo, nome, data_nascimento
+FROM Pessoa
+WHERE data_nascimento = (SELECT MIN(data_nascimento) FROM Pessoa)
+UNION ALL
+SELECT 'Mais Novo' AS tipo, nome, data_nascimento
+FROM Pessoa
+WHERE data_nascimento = (SELECT MAX(data_nascimento) FROM Pessoa); 
+
+SELECT 
+    AVG(TRUNC(MONTHS_BETWEEN(SYSDATE, data_nascimento) / 12)) AS idade_media
+FROM Pessoa;
+
+SELECT *
+FROM Ingresso
+WHERE 
+    data_compra BETWEEN DATE '2024-01-01' AND DATE '2024-12-31'
+    AND forma_pagamento IN (
+        SELECT forma_pagamento
+        FROM Ingresso
+        WHERE forma_pagamento IN ('Dinheiro', 'Cartão', 'PIX')
+    );
+
+SELECT forma_pagamento, COUNT(*) AS total_vendas
+FROM Ingresso
+GROUP BY forma_pagamento
+HAVING COUNT(*) < 2;
+
+SELECT *
+FROM Ingresso
+WHERE data IS NOT NULL;
