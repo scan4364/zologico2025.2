@@ -1,1 +1,7 @@
+ALTER TABLE Funcionario
+ADD email VARCHAR2;
 
+CREATE UNIQUE INDEX idx_email ON Funcionario (email);
+
+INSERT INTO Funcionario
+VALUES (100,1000,200,2020-05-02,"Faxineiro",5000.00);
