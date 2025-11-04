@@ -5,3 +5,14 @@ CREATE UNIQUE INDEX idx_email ON Funcionario (email);
 
 INSERT INTO Funcionario
 VALUES (100,1000,200,2020-05-02,"Faxineiro",5000.00);
+
+UPDATE Funcionario
+SET email = josedafaxina@yahoo.com
+WHERE id_pes = 100;
+
+DELETE FROM Funcionario
+WHERE id_pes = 100;
+
+SELECT tipo, salario FROM Funcionario
+WHERE salario >= 4000;
+
