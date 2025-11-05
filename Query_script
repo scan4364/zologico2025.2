@@ -1,6 +1,6 @@
 -- Codigo Gabriel Fonseca
 ALTER TABLE Funcionario
-ADD email VARCHAR2;
+ADD COLUMN email VARCHAR2;
 
 CREATE UNIQUE INDEX idx_email ON Funcionario (email);
 
