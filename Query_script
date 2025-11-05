@@ -554,3 +554,75 @@ BEGIN
     RETURN v_total;
 END;
 
+-- Parte Vitor Buarque
+-- ==========================================================
+-- 11. WHILE LOOP
+-- ----------------------------------------------------------
+-- Função: Somar os n primeiros números inteiros
+-- Parâmetro: p_limite -> define até qual número somar
+-- Exemplo: SELECT fn_somar_idade_while(10) FROM dual;  --> 55
+-- ==========================================================
+CREATE OR REPLACE FUNCTION fn_somar_idade_while(p_limite NUMBER)
+RETURN NUMBER
+IS
+    v_total NUMBER := 0;
+    v_idade NUMBER := 1;
+BEGIN
+    WHILE v_idade <= p_limite LOOP
+        v_total := v_total + v_idade;
+        v_idade := v_idade + 1;
+    END LOOP;
+    RETURN v_total;
+END;
+/
+-- ==========================================================
+-- 12. FOR IN LOOP + 13. SELECT INTO
+-- ----------------------------------------------------------
+-- Função: Retorna o maior salário atual entre os funcionários
+-- Demonstra o uso de SELECT ... INTO e FOR IN LOOP
+-- ==========================================================
+CREATE OR REPLACE FUNCTION fn_maior_salario
+RETURN NUMBER
+IS
+    v_max_sal NUMBER := 0;
+    v_salario NUMBER;
+BEGIN
+    -- SELECT INTO para capturar o maior salário
+    SELECT MAX(salario) INTO v_max_sal FROM Funcionario;
+
+    -- FOR IN LOOP apenas para demonstração (iteração de 1 a 5)
+    FOR i IN 1..5 LOOP
+        v_salario := v_max_sal + i;
+    END LOOP;
+
+    RETURN v_max_sal;
+END;
+/
+-- ==========================================================
+-- 14. CURSOR (OPEN, FETCH, CLOSE)
+-- ----------------------------------------------------------
+-- Função: Calcula a média salarial dos funcionários
+-- Demonstra o uso explícito de cursor (OPEN, FETCH, CLOSE)
+-- ==========================================================
+CREATE OR REPLACE FUNCTION fn_media_salarios_cursor
+RETURN NUMBER
+IS
+    CURSOR c_func IS SELECT salario FROM Funcionario;
+    v_salario NUMBER;
+    v_total NUMBER := 0;
+    v_count NUMBER := 0;
+BEGIN
+    OPEN c_func;
+    LOOP
+        FETCH c_func INTO v_salario;
+        EXIT WHEN c_func%NOTFOUND;
+        v_total := v_total + v_salario;
+        v_count := v_count + 1;
+    END LOOP;
+    CLOSE c_func;
+
+    RETURN ROUND(v_total / v_count, 2);
+END;
+/
+
+
