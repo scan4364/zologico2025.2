@@ -142,6 +142,48 @@ WHERE
 SELECT forma_pagamento, COUNT(*) AS total_vendas
 FROM Ingresso
 GROUP BY forma_pagamento
+
+CREATE OR REPLACE TYPE tipo_animal_record AS OBJECT (
+    id_animal   NUMBER,
+    nome        VARCHAR2(255),
+    habitat     VARCHAR2(255)
+);
+/
+
+
+CREATE OR REPLACE TYPE tipo_animais_table AS TABLE OF tipo_animal_record;
+/
+
+
+CREATE OR REPLACE FUNCTION fn_qtd_animais_habitat(p_id_habitat NUMBER)
+RETURN NUMBER
+IS
+    v_qtd NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO v_qtd FROM Animal WHERE id_habitat = p_id_habitat;
+    RETURN v_qtd;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE prc_listar_animais_por_habitat(
+    p_id_habitat IN NUMBER,
+    p_result OUT tipo_animais_table
+)
+IS
+BEGIN
+    p_result := tipo_animais_table(); 
+
+    FOR reg IN (
+        SELECT a.id_animal, a.nome AS nome_animal, h.nome AS nome_habitat
+        FROM Animal a
+        LEFT JOIN Habitat h ON a.id_habitat = h.cod
+        WHERE a.id_habitat = p_id_habitat
+    ) LOOP
+        p_result.EXTEND;
+        p_result(p_result.LAST) := tipo_animal_record(reg.id_animal, reg.nome_animal, reg.nome_habitat);
+    END LOOP;
+END;
+/
 HAVING COUNT(*) < 2;
 
 SELECT *
