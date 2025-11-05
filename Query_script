@@ -1,3 +1,4 @@
+-- Codigo Gabriel Fonseca
 ALTER TABLE Funcionario
 ADD email VARCHAR2;
 
@@ -10,11 +11,25 @@ UPDATE Funcionario
 SET email = josedafaxina@yahoo.com
 WHERE id_pes = 100;
 
-DELETE FROM Funcionario
-WHERE id_pes = 100;
+SELECT email FROM Funcionario
+WHERE email LIKE 'j%';
 
 SELECT tipo, salario FROM Funcionario
 WHERE salario >= 4000;
+
+SELECT email, salario FROM Funcionario
+WHERE salario >= (SELECT AVG(salario) FROM Funcionario);
+
+SELECT email FROM Funcionario
+WHERE id_pes IN (
+  SELECT id_pes
+  FROM Funcionario
+  WHERE tipo = 'Faxineiro'
+);
+
+DELETE FROM Funcionario
+WHERE id_pes = 100;
+-- END Codigo Gabriel Fonseca
 
 -- Codigo celso Anjos
 CREATE TABLE Audi_Funci(
