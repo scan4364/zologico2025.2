@@ -150,7 +150,7 @@ WHERE
 
 SELECT forma_pagamento, COUNT(*) AS total_vendas
 FROM Ingresso
-GROUP BY forma_pagamento
+GROUP BY forma_pagamento;
 
 CREATE OR REPLACE TYPE tipo_animal_record AS OBJECT (
     id_animal   NUMBER,
@@ -193,11 +193,11 @@ BEGIN
     END LOOP;
 END;
 /
-HAVING COUNT(*) < 2;
+-- HAVING COUNT(*) < 2;
 
 SELECT *
 FROM Ingresso
-WHERE data IS NOT NULL;
+WHERE data_compra IS NOT NULL;
 
 -- ==========================================================
 -- ADIÇÕES: CONSULTAS USANDO CASE WHEN
@@ -627,5 +627,6 @@ BEGIN
     RETURN ROUND(v_total / v_count, 2);
 END;
 /
+
 
 
