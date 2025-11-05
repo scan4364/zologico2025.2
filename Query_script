@@ -30,11 +30,12 @@ WHERE id_pes IN (
 DELETE FROM Funcionario
 WHERE id_pes = 100;
 
-SELECT FROM Funcionario
-WHERE salario > ANY (SELECT salario FROM Funcionario WHERE data_admissao < 2025-01-01);
+SELECT * FROM Funcionario
+WHERE salario > ANY (SELECT salario FROM Funcionario WHERE data_admissao < DATE '2025-01-01');
 
-SELECT FROM Funcionario
-WHERE salario > ALL (SELECT salario FROM Funcionario WHERE data_admissao > 2020-01-31);
+SELECT * FROM Funcionario
+WHERE salario > ALL (SELECT salario FROM Funcionario WHERE data_admissao > DATE '2020-01-31');
+
 -- END Codigo Gabriel Fonseca
 
 -- Codigo celso Anjos
