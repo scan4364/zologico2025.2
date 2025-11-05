@@ -195,3 +195,80 @@ HAVING COUNT(*) < 2;
 SELECT *
 FROM Ingresso
 WHERE data IS NOT NULL;
+
+-- ==========================================================
+-- ADIÇÕES: CONSULTAS USANDO CASE WHEN
+-- ==========================================================
+
+-- Classificar Funcionários por Faixa Salarial
+-- ----------------------------------------------------------
+-- Mostra o nome do funcionário, salário e sua faixa salarial.
+SELECT 
+    P.nome AS nome_funcionario,
+    F.salario,
+    CASE 
+      WHEN F.salario >= 8000 THEN 'Alto'
+      WHEN F.salario BETWEEN 8000 AND 4000 THEN 'Medio'
+      ELSE 'Baixo'
+    END AS faixa_salarial
+FROM Funcionario F
+INNER JOIN Pessoa P ON F.id_pes = P.id_pessoa;
+
+-- Classificar Animais por Faixa Etária
+-- ----------------------------------------------------------
+-- Mostra o nome do animal e sua idade.
+SELECT 
+    A.nome AS nome_animal,
+    A.idade,
+    CASE 
+      WHEN A.idade <= 2 THEN 'Jovem'
+      WHEN A.idade BETWEEN 2 AND 10 THEN 'Adulto'
+      ELSE 'Idoso'
+    END AS faixa_etaria
+FROM Animal A;
+
+-- Classificar Estágios por Status Atual
+-- ----------------------------------------------------------
+-- Indica se um estágio está ativo, finalizado ou em andamento.
+SELECT 
+    E.cod,
+    P.nome AS nome_estagiario,
+    E.data_inicio,
+    E.data_fim,
+    CASE 
+      WHEN E.data_fim IS NULL THEN 'Em Andamento'
+      WHEN E.data_fim < SYSDATE THEN 'Finalizado'
+      ELSE 'Ativo'
+    END AS status_estagio
+FROM Estagio E
+INNER JOIN Estagiario ES ON E.id_estagiario = ES.id_func
+INNER JOIN Pessoa P ON F.id_func = P.id_pessoa;
+
+-- Classificar Ingressos por Faixa de Valor
+-- ----------------------------------------------------------
+-- Mostra o tipo de pagamento e classifica os ingressos conforme o valor.
+SELECT 
+    I.cod AS codigo_ingresso,
+    I.forma_pagamento,
+    I.valor,
+    CASE
+        WHEN I.valor < 30 THEN 'Baixo Custo'
+        WHEN I.valor BETWEEN 30 AND 60 THEN 'Médio Custo'
+        ELSE 'Alto Custo'
+    END AS faixa_preco
+FROM Ingresso I
+ORDER BY I.valor;
+
+-- Determinar a situação da supervisão do Funcionário
+-- ----------------------------------------------------------
+-- Mostra se o funcionário possui ou não supervisor.
+SELECT 
+    P.nome AS nome_funcionario,
+    CASE 
+      WHEN F.id_supervisor IS NULL THEN 'Sem supervisor'
+      ELSE 'Com supervisor'
+    END AS situacao_supervisao
+FROM Funcionario F
+INNER JOIN Pessoa P ON F.id_pes = P.id_pessoa
+ORDER BY situacao_supervisao;
+
