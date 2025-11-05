@@ -1,14 +1,14 @@
 -- Codigo Gabriel Fonseca
 ALTER TABLE Funcionario
-ADD COLUMN email VARCHAR2;
+ADD email VARCHAR2(255);
 
 CREATE UNIQUE INDEX idx_email ON Funcionario (email);
 
 INSERT INTO Funcionario
-VALUES (100,1000,200,2020-05-02,"Faxineiro",5000.00);
+VALUES (100, 7, 1, TO_DATE('2020-05-02', 'YYYY-MM-DD'),'Faxineiro', 5000.00, TO_DATE('2020-05-05', 'YYYY-MM-DD'), TO_DATE('2021-01-04', 'YYYY-MM-DD'), 'joao123@email.com');
 
 UPDATE Funcionario
-SET email = josedafaxina@yahoo.com
+SET email = 'josedafaxina@yahoo.com'
 WHERE id_pes = 100;
 
 SELECT email FROM Funcionario

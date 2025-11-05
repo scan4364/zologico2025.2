@@ -5,7 +5,6 @@ INSERT INTO Habitat (cod, nome, tipo, temperatura, umidade) VALUES (10, 'Florest
 INSERT INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio) VALUES ('Comportamento das Araras', 'Aves Neotropicais', TO_DATE('2025-01-01', 'YYYY-MM-DD'));
 INSERT INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (100, 'Exame de Sangue', 'Coleta de amostra para hemograma completo.');
 INSERT INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (20, TO_DATE('2025-11-15', 'YYYY-MM-DD'), TO_DATE('14:00', 'HH24:MI'), TO_DATE('15:00', 'HH24:MI'), 'Educacional', 'Alimentação das Capivaras');
-INSERT INTO Brinde (ID_Brinde, Nome, Descrição) VALUES (30, 'Adesivo de Capivara', 'Adesivo à prova d''água.');
 
 INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (1, '50070-000', 'Ana Gerente', '111.111.111-11', TO_DATE('1980-05-10', 'YYYY-MM-DD'), 'F');
 INSERT INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (2, '50070-000', 'Beto Veterinário', '222.222.222-22', TO_DATE('1990-01-20', 'YYYY-MM-DD'), 'M');
@@ -38,17 +37,17 @@ INSERT INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta) VALUES (50,
 INSERT INTO Visitante (id_pes) VALUES (100);
 INSERT INTO Visitante (id_pes) VALUES (101);
 INSERT INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1001, 100, 'Vitor Junior', 7);
+INSERT INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (30, 1001, 100, 20, 'Adesivo de Capivara', 'Adesivo à prova d''água.');
 INSERT INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, data, valor) VALUES (1000, 100, 6, 'PIX', SYSDATE, TO_DATE('2025-11-15', 'YYYY-MM-DD'), 40.00);
 INSERT INTO Estagio (cod, id_estagiario, status, data_inicio, duracao, area) VALUES (500, 7, 'Ativo', TO_DATE('2025-03-01', 'YYYY-MM-DD'), 12, 'Biologia');
 INSERT INTO Historico_Estadia (id_animal, id_habitat, Data_entrada) VALUES (50, 10, TO_DATE('2024-01-10', 'YYYY-MM-DD'));
 
-INSERT INTO Atendimento_Veterinario (id_animal, crmv_veterinario, Data, Diagnostico) VALUES (50, 'CRMV-PE-2222', TO_DATE('2025-11-01', 'YYYY-MM-DD'), 'Check-up de rotina.');
+INSERT INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (10, 50, 2, TO_DATE('2025-11-01', 'YYYY-MM-DD'), 'Check-up de rotina.');
 INSERT INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (101, 20);
 INSERT INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto) VALUES (50, 'Comportamento das Araras');
-INSERT INTO Consulta_Realiza_Procedimento (id_animal, crmv_veterinario, Data_Atendimento, ID_Procedimento) VALUES (50, 'CRMV-PE-2222', TO_DATE('2025-11-01', 'YYYY-MM-DD'), 100);
+INSERT INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (10, 100);
 INSERT INTO Educador_Gera_Atividade (id_educador, id_atividade) VALUES (4, 20);
 INSERT INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1001, 100, 20);
-INSERT INTO Crianca_recebe_brinde (id_pulseira, id_visitante, id_atividade, ID_Brinde) VALUES (1001, 100, 20, 30);
 INSERT INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade) VALUES (50, 3, TO_DATE('2024-01-10', 'YYYY-MM-DD'));
 INSERT INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao) VALUES (5, 'Comportamento das Araras', 'Pesquisadora Chefe');
 

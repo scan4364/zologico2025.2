@@ -12,47 +12,52 @@ Ordem de execução:
 -- 1. TABELAS INDEPENDENTES
 -- =============================================
 CREATE TABLE Endereco (
-    cep VARCHAR2(9) PRIMARY KEY,
+    cep VARCHAR2(9) NOT NULL,
     rua VARCHAR2(255) NOT NULL,
     bairro VARCHAR2(255),
     cidade VARCHAR2(255) NOT NULL,
     complemento VARCHAR2(255),
     numero VARCHAR2(20), -- VARCHAR2 para casos como '100A', 'S/N'
-    pais VARCHAR2(100) NOT NULL
+    pais VARCHAR2(100) NOT NULL,
+    CONSTRAINT endereco_pkey PRIMARY KEY (cep)
 );
 
 CREATE TABLE Habitat (
-    cod INT PRIMARY KEY,
+    cod INT NOT NULL,
     nome VARCHAR2(255) NOT NULL,
     espaco_disponivel NUMBER(10, 2),
     tipo VARCHAR2(100),
     temperatura NUMBER(5, 2),
-    umidade NUMBER(5, 2)
+    umidade NUMBER(5, 2),
+    CONSTRAINT habitat_pkey PRIMARY KEY (cod)
 );
 
 CREATE TABLE Projeto_Pesquisa (
-    titulo VARCHAR2(255) PRIMARY KEY,
+    titulo VARCHAR2(255) NOT NULL,
     linha_pesquisa CLOB,
     data_inicio DATE,
-    data_fim DATE
+    data_fim DATE,
+    CONSTRAINT projeto_pesquisa_pkey PRIMARY KEY (titulo)
 );
 
 
 CREATE TABLE Procedimentos (
-    ID_Procedimento INT PRIMARY KEY,
+    ID_Procedimento INT NOT NULL,
     Nome VARCHAR2(255) NOT NULL,
-    Descrição CLOB
+    Descrição CLOB,
+    CONSTRAINT procedimentos_pkey PRIMARY KEY (ID_Procedimento)
 );
 
 
 
 CREATE TABLE Atividade (
-    cod INT PRIMARY KEY,
+    cod INT NOT NULL,
     data DATE,
     hora_inicio DATE, -- No Oracle, DATE armazena data e hora. Use-o para TIME.
     hora_fim DATE, -- No Oracle, DATE armazena data e hora. Use-o para TIME.
     tipo VARCHAR2(100),
-    nome VARCHAR2(255) NOT NULL
+    nome VARCHAR2(255) NOT NULL,
+    CONSTRAINT atividade_pkey PRIMARY KEY (cod)
 );
 
 
@@ -62,39 +67,42 @@ CREATE TABLE Atividade (
 -- =============================================
 
 CREATE TABLE Pessoa (
-    id_pessoa INT PRIMARY KEY,
+    id_pessoa INT NOT NULL,
     cep VARCHAR2(9),
     nome VARCHAR2(255) NOT NULL,
     cpf VARCHAR2(14) UNIQUE NOT NULL,
     data_nascimento DATE,
     sexo CHAR(1),
-    FOREIGN KEY (cep) REFERENCES Endereco(cep)
+    CONSTRAINT pessoa_pkey PRIMARY KEY (id_pessoa),
+    CONSTRAINT pessoa_fkey FOREIGN KEY (cep) REFERENCES Endereco(cep)
 );
 
 CREATE TABLE Animal (
-    id_animal INT PRIMARY KEY,
-    id_habitat INT,
+    id_animal INT NOT NULL,
+    id_habitat INT NOT NULL,
     nome VARCHAR2(255) NOT NULL,
     sexo CHAR(1),
     idade INT,
     dieta CLOB,
     historico_saude CLOB,
-    FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
+    CONSTRAINT animal_pkey PRIMARY KEY (id_animal),
+    CONSTRAINT animal_fkey FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
 );
 
-CREATE TABLE Brinde (
-    ID_Brinde INT PRIMARY KEY,
-    Nome VARCHAR2(255) NOT NULL,
-    Descrição CLOB
+CREATE TABLE Telefone (
+    telefone VARCHAR2(11) NOT NULL,
+    id_pessoa INT NOT NULL,
+    CONSTRAINT telefone_pkey PRIMARY KEY (telefone, id_pessoa),
+    CONSTRAINT telefone_fkey FOREIGN KEY (id_pessoa) REFERENCES Pessoa(id_pessoa)
 );
-
 -- =============================================
 -- 3. HIERARQUIA PESSOA (ESPECIALIZAÇÃO)
 -- =============================================
 
 CREATE TABLE Visitante (
-    id_pes INT PRIMARY KEY,
-    FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
+    id_pes INT NOT NULL,
+    CONSTRAINT visitante_pkey PRIMARY KEY (id_pes),
+    CONSTRAINT visitante_fkey FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
 );
 
 CREATE TABLE Crianca (
@@ -102,8 +110,20 @@ CREATE TABLE Crianca (
     id_visitante INT NOT NULL,
     nome VARCHAR2(255) NOT NULL,
     idade INT,
-    PRIMARY KEY (id_pulseira, id_visitante), -- Chave primária composta
-    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes)
+    CONSTRAINT crianca_pkey PRIMARY KEY (id_pulseira, id_visitante),
+    CONSTRAINT crianca_fkey FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes)
+);
+
+CREATE TABLE Brinde (
+    ID_Brinde INT NOT NULL,
+    id_pulseira INT NOT NULL,
+    id_visitante INT NOT NULL,
+    id_atividade INT NOT NULL,
+    Nome VARCHAR2(255) NOT NULL,
+    Descrição CLOB,
+    CONSTRAINT brinde_pkey PRIMARY KEY (ID_Brinde),
+    CONSTRAINT brinde_fkey_c FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante),
+    CONSTRAINT brinde_fkey_a FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
 );
 
 /* A relação entre Funcionário e Estagiario é circular.
@@ -114,7 +134,7 @@ CREATE TABLE Crianca (
 */
 
 CREATE TABLE Funcionario (
-    id_pes INT PRIMARY KEY,
+    id_pes INT NOT NULL,
     id_estagiario INT NULL, -- FK será adicionada abaixo
     id_supervisor INT,
     data_admissao DATE NOT NULL,
@@ -122,57 +142,64 @@ CREATE TABLE Funcionario (
     salario NUMBER(10, 2),
     data_inicio DATE,
     data_fim DATE,
-    FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
+    CONSTRAINT funcionario_pkey PRIMARY KEY (id_pes),
+    CONSTRAINT funcionario_fkey_p FOREIGN KEY (id_pes) REFERENCES Pessoa(id_pessoa)
     -- O auto-relacionamento (supervisor) será adicionado abaixo
 );
 
 ALTER TABLE Funcionario
-ADD CONSTRAINT fk_func_supervisor
+ADD CONSTRAINT funcionario_fkey_s
 FOREIGN KEY (id_supervisor) REFERENCES Funcionario(id_pes);
 
 
 CREATE TABLE Estagiario (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     instituicao_ensino VARCHAR2(255),
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT estagiario_pkey PRIMARY KEY (id_func),
+    CONSTRAINT estagiario_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 -- Adicionando a FK faltante para completar a dependência circular
 ALTER TABLE Funcionario
-ADD CONSTRAINT fk_func_estagiario
+ADD CONSTRAINT funcionario_fkey_e
 FOREIGN KEY (id_estagiario) REFERENCES Estagiario(id_func);
 
 
 CREATE TABLE Veterinario (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     crmv VARCHAR2(50) UNIQUE NOT NULL,
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT veterinario_pkey PRIMARY KEY (id_func),
+    CONSTRAINT veterinario_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 CREATE TABLE Educador (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     area_formacao VARCHAR2(255),
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT educador_pkey PRIMARY KEY (id_func),
+    CONSTRAINT educador_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 CREATE TABLE Cuidador (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     area_certificacao VARCHAR2(255),
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT cuidador_pkey PRIMARY KEY (id_func),
+    CONSTRAINT cuidador_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 CREATE TABLE Pesquisador (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     area_pesquisa VARCHAR2(255),
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT pesquisador_pkey PRIMARY KEY (id_func),
+    CONSTRAINT pesquisador_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 CREATE TABLE Atendente (
-    id_func INT PRIMARY KEY,
+    id_func INT NOT NULL,
     guiche INT,
     turno VARCHAR2(50),
     setor_atendimento VARCHAR2(100),
-    FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
+    CONSTRAINT atendente_pkey PRIMARY KEY (id_func),
+    CONSTRAINT atendente_fkey FOREIGN KEY (id_func) REFERENCES Funcionario(id_pes)
 );
 
 -- =============================================
@@ -180,7 +207,7 @@ CREATE TABLE Atendente (
 -- =============================================
 
 CREATE TABLE Ingresso (
-    cod INT PRIMARY KEY,
+    cod INT NOT NULL,
     id_visitante INT NOT NULL,
     id_atendente INT NOT NULL,
     forma_pagamento VARCHAR2(100),
@@ -189,21 +216,23 @@ CREATE TABLE Ingresso (
     data DATE, -- Data da visita
     tipo VARCHAR2(100),
     valor NUMBER(10, 2),
-    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
-    FOREIGN KEY (id_atendente) REFERENCES Atendente(id_func)
+    CONSTRAINT ingresso_pkey PRIMARY KEY (cod),
+    CONSTRAINT ingresso_fkey_v FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
+    CONSTRAINT ingresso_fkey_a FOREIGN KEY (id_atendente) REFERENCES Atendente(id_func)
 );
 
 
 
 CREATE TABLE Estagio (
-    cod INT PRIMARY KEY,
+    cod INT NOT NULL,
     id_estagiario INT NOT NULL,
     status VARCHAR2(100),
     data_inicio DATE,
     data_fim DATE,
     duracao INT, -- em meses
     area VARCHAR2(100),
-    FOREIGN KEY (id_estagiario) REFERENCES Estagiario(id_func)
+    CONSTRAINT estagio_pkey PRIMARY KEY (cod),
+    CONSTRAINT estagio_fkey FOREIGN KEY (id_estagiario) REFERENCES Estagiario(id_func)
 );
 
 CREATE TABLE Historico_Estadia (
@@ -212,9 +241,9 @@ CREATE TABLE Historico_Estadia (
     Data_entrada DATE NOT NULL,
     Data_saida DATE,
     motivo_transferencia CLOB,
-    PRIMARY KEY (id_animal, id_habitat),
-    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
+    CONSTRAINT historico_estadia_pkey PRIMARY KEY (id_animal, id_habitat),
+    CONSTRAINT historico_estadia_fkey_a FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    CONSTRAINT historico_estadia_fkey_h FOREIGN KEY (id_habitat) REFERENCES Habitat(cod)
 );
 
 -- =============================================
@@ -222,30 +251,31 @@ CREATE TABLE Historico_Estadia (
 -- =============================================
 
 /* --- CORREÇÃO LÓGICA 1: Tabela Atendimento_Veterinario ---
-   Adicionada uma CHAVE PRIMÁRIA composta (id_animal, crmv_veterinario, Data)
+   Adicionada uma CHAVE PRIMÁRIA (id_atendimento)
    para identificar unicamente um atendimento.
    (Assumindo que um veterinário não atende o mesmo animal mais de uma vez na MESMA DATA.
     Se puder, a coluna 'Data' deveria ser TIMESTAMP e incluída na PK)
 */
 CREATE TABLE Atendimento_Veterinario (
+    id_atendimento INT NOT NULL,
     id_animal INT NOT NULL,
-    crmv_veterinario VARCHAR2(50) NOT NULL,
+    id_veterinario INT NOT NULL,
     Data DATE NOT NULL, 
     Diagnostico CLOB,
     
-    PRIMARY KEY (id_animal, crmv_veterinario, Data), -- PK Adicionada
+    CONSTRAINT atendimento_veterinario_pkey PRIMARY KEY (id_atendimento), -- PK Adicionada
     
-    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (crmv_veterinario) REFERENCES Veterinario(crmv)
+    CONSTRAINT atendimento_veterinario_fkey_a FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    CONSTRAINT atendimento_veterinario_fkey_v FOREIGN KEY (id_veterinario) REFERENCES Veterinario(id_func)
 );
 
 
 CREATE TABLE Visitante_Participa_Atividade (
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
-    PRIMARY KEY (id_visitante, id_atividade),
-    FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
-    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+    CONSTRAINT visitante_participa_atividade_pkey PRIMARY KEY (id_visitante, id_atividade),
+    CONSTRAINT visitante_participa_atividade_fkey_v FOREIGN KEY (id_visitante) REFERENCES Visitante(id_pes),
+    CONSTRAINT visitante_participa_atividade_fkey_a FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
 );
 
 CREATE TABLE Animal_Participa_ProjetoDePesquisa (
@@ -253,9 +283,9 @@ CREATE TABLE Animal_Participa_ProjetoDePesquisa (
     titulo_projeto VARCHAR2(255) NOT NULL,
     papel_no_projeto VARCHAR2(255),
     frequencia_observacao VARCHAR2(100),
-    PRIMARY KEY (id_animal, titulo_projeto),
-    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
+    CONSTRAINT animal_participa_projetodepesquisa_pkey PRIMARY KEY (id_animal, titulo_projeto),
+    CONSTRAINT animal_participa_projetodepesquisa_fkey_a FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    CONSTRAINT animal_participa_projetodepesquisa_fkey_p FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
 );
 
 /* --- CORREÇÃO LÓGICA 2: Tabela Consulta_Realiza_Procedimento ---
@@ -264,50 +294,36 @@ CREATE TABLE Animal_Participa_ProjetoDePesquisa (
 */
 CREATE TABLE Consulta_Realiza_Procedimento (
     -- Colunas da FK para o Atendimento:
-    id_animal INT NOT NULL,
-    crmv_veterinario VARCHAR2(50) NOT NULL,
-    Data_Atendimento DATE NOT NULL, -- Coluna que faltava
+    id_atendimento INT NOT NULL,
     
     -- Coluna do Procedimento:
     ID_Procedimento INT NOT NULL,
     
-    -- CHAVE PRIMÁRIA COMPOSTA:
-    PRIMARY KEY (id_animal, crmv_veterinario, Data_Atendimento, ID_Procedimento),
+    -- CHAVE PRIMÁRIA
+    CONSTRAINT consulta_realiza_procedimento_pkey PRIMARY KEY (id_atendimento, ID_Procedimento),
 
     -- CHAVE ESTRANGEIRA COMPOSTA (Referencia o Atendimento):
-    FOREIGN KEY (id_animal, crmv_veterinario, Data_Atendimento) 
-        REFERENCES Atendimento_Veterinario(id_animal, crmv_veterinario, Data),
-        
-    FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
+    CONSTRAINT consulta_realiza_procedimento_fkey_a FOREIGN KEY (id_atendimento) REFERENCES Atendimento_Veterinario(id_atendimento),
+    
+    CONSTRAINT consulta_realiza_procedimento_fkey_p FOREIGN KEY (ID_Procedimento) REFERENCES Procedimentos(ID_Procedimento)
 );
 
 
 CREATE TABLE Educador_Gera_Atividade (
     id_educador INT NOT NULL,
     id_atividade INT NOT NULL,
-    PRIMARY KEY (id_educador, id_atividade),
-    FOREIGN KEY (id_educador) REFERENCES Educador(id_func),
-    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
+    CONSTRAINT educador_gera_atividade_pkey PRIMARY KEY (id_educador, id_atividade),
+    CONSTRAINT educador_gera_atividade_fkey_e FOREIGN KEY (id_educador) REFERENCES Educador(id_func),
+    CONSTRAINT educador_gera_atividade_fkey_a FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
 );
 
 CREATE TABLE Crianca_participa_atividade (
     id_pulseira INT NOT NULL,
     id_visitante INT NOT NULL,
     id_atividade INT NOT NULL,
-    PRIMARY KEY (id_pulseira, id_visitante, id_atividade),
-    FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
-    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
-);
-
-CREATE TABLE Crianca_recebe_brinde (
-    id_pulseira INT NOT NULL,
-    id_visitante INT NOT NULL,
-    id_atividade INT NOT NULL,
-    ID_Brinde INT NOT NULL,
-    PRIMARY KEY (id_pulseira, id_visitante, id_atividade, ID_Brinde),
-    FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante), -- Chave estrangeira composta
-    FOREIGN KEY (id_atividade) REFERENCES Atividade(cod),
-    FOREIGN KEY (ID_Brinde) REFERENCES Brinde(ID_Brinde)
+    CONSTRAINT crianca_participa_atividade_pkey PRIMARY KEY (id_pulseira, id_visitante, id_atividade),
+    CONSTRAINT crianca_participa_atividade_fkey_c FOREIGN KEY (id_pulseira, id_visitante) REFERENCES Crianca(id_pulseira, id_visitante),
+    CONSTRAINT crianca_participa_atividade_fkey_a FOREIGN KEY (id_atividade) REFERENCES Atividade(cod)
 );
 
 CREATE TABLE Cuidador_Cuida_Animal (
@@ -315,9 +331,9 @@ CREATE TABLE Cuidador_Cuida_Animal (
     id_cuidador INT NOT NULL,
     data_inicio_responsabilidade DATE,
     observacoes CLOB,
-    PRIMARY KEY (id_animal, id_cuidador),
-    FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
-    FOREIGN KEY (id_cuidador) REFERENCES Cuidador(id_func)
+    CONSTRAINT cuidador_cuida_animal_pkey PRIMARY KEY (id_animal, id_cuidador),
+    CONSTRAINT cuidador_cuida_animal_fkey_a FOREIGN KEY (id_animal) REFERENCES Animal(id_animal),
+    CONSTRAINT cuidador_cuida_animal_fkey_c FOREIGN KEY (id_cuidador) REFERENCES Cuidador(id_func)
 );
 
 CREATE TABLE Pesquisador_Desenvolve_ProjetoDePesquisa (
@@ -325,7 +341,7 @@ CREATE TABLE Pesquisador_Desenvolve_ProjetoDePesquisa (
     titulo_projeto VARCHAR2(255) NOT NULL,
     funcao VARCHAR2(255),
     data_entrada DATE,
-    PRIMARY KEY (id_pesquisador, titulo_projeto),
-    FOREIGN KEY (id_pesquisador) REFERENCES Pesquisador(id_func),
-    FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
+    CONSTRAINT pesquisador_desenvolve_projetodepesquisa_pkey PRIMARY KEY (id_pesquisador, titulo_projeto),
+    CONSTRAINT pesquisador_desenvolve_projetodepesquisa_fkey_p FOREIGN KEY (id_pesquisador) REFERENCES Pesquisador(id_func),
+    CONSTRAINT pesquisador_desenvolve_projetodepesquisa_fkey_pro FOREIGN KEY (titulo_projeto) REFERENCES Projeto_Pesquisa(titulo)
 );
