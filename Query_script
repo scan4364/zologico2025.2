@@ -209,9 +209,9 @@ WHERE data_compra IS NOT NULL;
 SELECT 
     P.nome AS nome_funcionario,
     F.salario,
-    CASE 
-      WHEN F.salario >= 8000 THEN 'Alto'
-      WHEN F.salario BETWEEN 8000 AND 4000 THEN 'Medio'
+	CASE 
+  		WHEN F.salario >= 8000 THEN 'Alto'
+  		WHEN F.salario BETWEEN 4000 AND 7999 THEN 'Médio'
       ELSE 'Baixo'
     END AS faixa_salarial
 FROM Funcionario F
@@ -245,7 +245,9 @@ SELECT
     END AS status_estagio
 FROM Estagio E
 INNER JOIN Estagiario ES ON E.id_estagiario = ES.id_func
-INNER JOIN Pessoa P ON F.id_func = P.id_pessoa;
+INNER JOIN Funcionario F ON ES.id_func = F.id_pes
+INNER JOIN Pessoa P ON F.id_pes = P.id_pessoa;
+
 
 -- Classificar Ingressos por Faixa de Valor
 -- ----------------------------------------------------------
@@ -425,6 +427,7 @@ BEFORE INSERT OR UPDATE ON Ingresso
 FOR EACH ROW
 DECLARE
   v_msg VARCHAR2(4000);
+  v_acao VARCHAR2(50);
 BEGIN
   -- valida quantidade
   IF :NEW.quantidade IS NULL OR :NEW.quantidade <= 0 THEN
@@ -438,23 +441,27 @@ BEGIN
     RAISE_APPLICATION_ERROR(-20021, v_msg);
   END IF;
 
+  -- Determina a ação (INSERT ou UPDATE)
+  IF INSERTING THEN
+    v_acao := 'INSERCAO_INGRESSO';
+  ELSIF UPDATING THEN
+    v_acao := 'ATUALIZACAO_INGRESSO';
+  ELSE
+    v_acao := 'OUTRO';
+  END IF;
+
   -- Exemplo de log: inserir em tabela de auditoria (se existir)
   BEGIN
     INSERT INTO Audi_Funci(funId, nome, data_aud, descricao)
     VALUES(
-      :NEW.id_atendente, -- como exemplo, usamos id_atendente como user
+      :NEW.id_atendente, 
       (SELECT nome FROM Pessoa WHERE id_pessoa = :NEW.id_atendente),
       SYSDATE,
-      CASE
-        WHEN INSERTING THEN 'INSERCAO_INGRESSO'
-        WHEN UPDATING THEN 'ATUALIZACAO_INGRESSO'
-        ELSE 'OUTRO'
-      END
+      v_acao
     );
   EXCEPTION
     WHEN OTHERS THEN
-      
-      NULL; 
+      NULL; -- ignora erros de auditoria
   END;
 
 END;
@@ -479,6 +486,7 @@ BEGIN
         EXIT WHEN v_total >= p_limite; -- Sai do loop se acabar o cursor
     END LOOP;
 END;
+/
 
 -- Função: Contar quantos funcionários têm salário acima de um valor,
 --             parando a contagem quando encontrar 5 registros (para eficiência)
@@ -499,6 +507,7 @@ BEGIN
     CLOSE c_func;
     RETURN v_count;
 END;
+/
 
 -- 3️ Função: Retornar a soma de idades das pessoas até atingir 200 anos acumulados
 CREATE OR REPLACE FUNCTION fn_somar_idades
@@ -518,6 +527,7 @@ BEGIN
     CLOSE c_pessoas;
     RETURN v_total_idade;
 END;
+/
 
 -- Função: Procurar e retornar o primeiro e-mail de funcionário que comece com certa letra
 CREATE OR REPLACE FUNCTION fn_primeiro_email_inicial(p_inicial CHAR)
@@ -534,6 +544,7 @@ BEGIN
     CLOSE c_email;
     RETURN v_email;
 END;
+/
 
 -- Função: Calcular total de vendas de ingressos até determinado ano, parando ao atingir o limite
 CREATE OR REPLACE FUNCTION fn_total_vendas_ate_ano(p_ano NUMBER, p_limite NUMBER)
@@ -542,7 +553,9 @@ IS
     v_total NUMBER := 0;
     v_valor NUMBER;
     v_ano   NUMBER;
-    CURSOR c_ing IS SELECT valor_total, EXTRACT(YEAR FROM data_compra) AS ano FROM Ingresso;
+    CURSOR c_ing IS 
+        SELECT valor, EXTRACT(YEAR FROM data_compra) AS ano 
+        FROM Ingresso;
 BEGIN
     OPEN c_ing;
     LOOP
@@ -551,11 +564,13 @@ BEGIN
         IF v_ano <= p_ano THEN
             v_total := v_total + v_valor;
         END IF;
-        EXIT WHEN v_total >= p_limite; -- Sai se atingir o teto
+        EXIT WHEN v_total >= p_limite; -- para se atingir o limite
     END LOOP;
     CLOSE c_ing;
     RETURN v_total;
 END;
+/
+
 
 -- Parte Vitor Buarque
 -- ==========================================================
@@ -627,6 +642,4 @@ BEGIN
     RETURN ROUND(v_total / v_count, 2);
 END;
 /
-
-
 
