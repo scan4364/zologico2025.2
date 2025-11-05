@@ -39,6 +39,18 @@ CREATE TABLE Audi_Funci(
 	data_aud DATE 
 );
 
+SELECT *
+FROM Ingresso
+WHERE TO_CHAR(data, 'YYYY') LIKE '2025';
+
+SELECT 
+    a.id_animal,
+    a.nome AS nome_animal,
+    h.cod AS habitat_id,
+    h.nome AS habitat_nome
+FROM Animal a
+LEFT JOIN Habitat h ON a.id_habitat = h.cod;
+
 ALTER TABLE Audi_Funci
 ADD descricao VARCHAR2(255);
 
