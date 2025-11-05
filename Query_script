@@ -118,11 +118,13 @@ SELECT nome from Pessoa P
 	INNER JOIN Funcionario V ON P.id_pessoa = V.id_pes
 	ORDER BY nome ASC;
 
-SELECT COUNT(*) FROM Animal 
+SELECT COUNT(*) 
+    FROM Animal
 	GROUP BY idade
 	HAVING COUNT(*) < 1;
 
-SELECT COUNT(*) AS Quatidade FROM Animal 
+SELECT COUNT(*) AS Quatidade
+    FROM Animal;
 
 SELECT 'Mais Velho' AS tipo, nome, data_nascimento
 FROM Pessoa
