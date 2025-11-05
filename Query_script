@@ -456,3 +456,101 @@ BEGIN
 
 END;
 /
+-- ==========================================================
+--      ADIÇÕES: FUNÇÕES PRÁTICAS COM LOOP EXIT WHEN 
+-- ==========================================================
+
+-- Função: Somar salários de todos os funcionários até atingir um limite
+CREATE OR REPLACE FUNCTION fn_somar_salarios_ate_limite(p_limite NUMBER)
+RETURN NUMBER
+IS
+    v_total NUMBER := 0;
+    v_salario NUMBER;
+    CURSOR c_sal IS SELECT salario FROM Funcionario ORDER BY salario;
+BEGIN
+    OPEN c_sal;
+    LOOP
+        FETCH c_sal INTO v_salario;
+        EXIT WHEN c_sal%NOTFOUND; -- Sai do loop se acabar o cursor
+        v_total := v_total + v_salario;
+        EXIT WHEN v_total >= p_limite; -- Sai do loop se acabar o cursor
+    END LOOP;
+END;
+
+-- Função: Contar quantos funcionários têm salário acima de um valor,
+--             parando a contagem quando encontrar 5 registros (para eficiência)
+CREATE OR REPLACE FUNCTION fn_contar_funcionarios_acima(p_valor NUMBER)
+RETURN NUMBER
+IS
+    v_count NUMBER := 0;
+    v_salario NUMBER;
+    CURSOR c_func IS SELECT salario FROM Funcionario WHERE salario > p_valor;
+BEGIN
+    OPEN c_func;
+    LOOP
+        FETCH c_func INTO v_salario;
+        EXIT WHEN c_func%NOTFOUND;
+        v_count := v_count + 1;
+        EXIT WHEN v_count >= 5; -- Para o loop após 5 registros
+    END LOOP;
+    CLOSE c_func;
+    RETURN v_count;
+END;
+
+-- 3️ Função: Retornar a soma de idades das pessoas até atingir 200 anos acumulados
+CREATE OR REPLACE FUNCTION fn_somar_idades
+RETURN NUMBER
+IS
+    v_total_idade NUMBER := 0;
+    v_idade NUMBER;
+    CURSOR c_pessoas IS SELECT TRUNC(MONTHS_BETWEEN(SYSDATE, data_nascimento)/12) AS idade FROM Pessoa;
+BEGIN
+    OPEN c_pessoas;
+    LOOP
+        FETCH c_pessoas INTO v_idade;
+        EXIT WHEN c_pessoas%NOTFOUND;
+        v_total_idade := v_total_idade + v_idade;
+        EXIT WHEN v_total_idade >= 200;
+    END LOOP;
+    CLOSE c_pessoas;
+    RETURN v_total_idade;
+END;
+
+-- Função: Procurar e retornar o primeiro e-mail de funcionário que comece com certa letra
+CREATE OR REPLACE FUNCTION fn_primeiro_email_inicial(p_inicial CHAR)
+RETURN VARCHAR2
+IS
+    v_email VARCHAR2(255);
+    CURSOR c_email IS SELECT email FROM Funcionario WHERE email LIKE p_inicial || '%';
+BEGIN
+    OPEN c_email;
+    LOOP
+        FETCH c_email INTO v_email;
+        EXIT WHEN c_email%NOTFOUND OR v_email IS NOT NULL; -- Sai quando achar o primeiro
+    END LOOP;
+    CLOSE c_email;
+    RETURN v_email;
+END;
+
+-- Função: Calcular total de vendas de ingressos até determinado ano, parando ao atingir o limite
+CREATE OR REPLACE FUNCTION fn_total_vendas_ate_ano(p_ano NUMBER, p_limite NUMBER)
+RETURN NUMBER
+IS
+    v_total NUMBER := 0;
+    v_valor NUMBER;
+    v_ano   NUMBER;
+    CURSOR c_ing IS SELECT valor_total, EXTRACT(YEAR FROM data_compra) AS ano FROM Ingresso;
+BEGIN
+    OPEN c_ing;
+    LOOP
+        FETCH c_ing INTO v_valor, v_ano;
+        EXIT WHEN c_ing%NOTFOUND;
+        IF v_ano <= p_ano THEN
+            v_total := v_total + v_valor;
+        END IF;
+        EXIT WHEN v_total >= p_limite; -- Sai se atingir o teto
+    END LOOP;
+    CLOSE c_ing;
+    RETURN v_total;
+END;
+
