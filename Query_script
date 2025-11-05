@@ -272,3 +272,187 @@ FROM Funcionario F
 INNER JOIN Pessoa P ON F.id_pes = P.id_pessoa
 ORDER BY situacao_supervisao;
 
+
+-- Código Mariana
+
+ -- Exception WHEN
+CREATE OR REPLACE FUNCTION fn_qtd_animais_habitat_seguro(p_id_habitat NUMBER)
+RETURN NUMBER
+IS
+  v_qtd NUMBER := 0;
+BEGIN
+  SELECT COUNT(*) INTO v_qtd
+  FROM Animal
+  WHERE id_habitat = p_id_habitat;
+
+  RETURN v_qtd;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RETURN 0;
+  WHEN OTHERS THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Erro inesperado em fn_qtd_animais_habitat_seguro: ' || SQLERRM);
+END;
+/
+
+-- USO DE PARÂMETROS IN / OUT / IN OUT
+
+CREATE OR REPLACE PROCEDURE prc_atualiza_salario(
+  p_id_pes      IN  NUMBER,
+  p_novo_salario IN NUMBER,
+  p_salario_antigo OUT NUMBER,
+  p_contador IN OUT NUMBER
+)
+IS
+BEGIN
+  -- pega salario antigo
+  SELECT salario INTO p_salario_antigo FROM Funcionario WHERE id_pes = p_id_pes;
+
+  -- atualiza salario
+  UPDATE Funcionario
+  SET salario = p_novo_salario
+  WHERE id_pes = p_id_pes;
+
+  IF SQL%ROWCOUNT = 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Funcionario nao encontrado: ' || p_id_pes);
+  END IF;
+
+  -- incrementa contador de operações na sessão (IN OUT)
+  p_contador := NVL(p_contador, 0) + 1;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    -- excecao tratada (reuso do exception
+    p_salario_antigo := NULL;
+    RAISE_APPLICATION_ERROR(-20003, 'Sem salario anterior: ' || p_id_pes);
+  WHEN OTHERS THEN
+    RAISE;
+END;
+/
+
+-- CREATE OR REPLACE PACKAGE (CHECK 17) & PACKAGE BODY (CHECK 18)
+
+-- CHECK 17: package spec
+CREATE OR REPLACE PACKAGE zoo_pkg IS
+
+  -- função que retorna quantidade de animais por habitat
+  FUNCTION fn_qtd_animais_habitat_pkg(p_id_habitat NUMBER) RETURN NUMBER;
+
+  -- procedimento para listar animais por habitat (usa tipo já criado tipo_animais_table)
+  PROCEDURE prc_listar_animais_por_habitat_pkg(
+    p_id_habitat IN NUMBER,
+    p_result OUT tipo_animais_table
+  );
+
+  -- procedimento para atualizar salario (usa IN, OUT, IN OUT)
+  PROCEDURE prc_atualiza_salario_pkg(
+    p_id_pes IN NUMBER,
+    p_novo_salario IN NUMBER,
+    p_salario_antigo OUT NUMBER,
+    p_contador IN OUT NUMBER
+  );
+
+END zoo_pkg;
+/
+
+-- CHECK 18: package body
+CREATE OR REPLACE PACKAGE BODY zoo_pkg IS
+
+  FUNCTION fn_qtd_animais_habitat_pkg(p_id_habitat NUMBER) RETURN NUMBER IS
+    v_qtd NUMBER := 0;
+  BEGIN
+    SELECT COUNT(*) INTO v_qtd FROM Animal WHERE id_habitat = p_id_habitat;
+    RETURN v_qtd;
+  EXCEPTION
+    WHEN OTHERS THEN
+      -- CHECK 15: tratamento de exceção dentro do package body
+      RAISE_APPLICATION_ERROR(-20010, 'Erro em fn_qtd_animais_habitat_pkg: ' || SQLERRM);
+  END fn_qtd_animais_habitat_pkg;
+
+  PROCEDURE prc_listar_animais_por_habitat_pkg(
+    p_id_habitat IN NUMBER,
+    p_result OUT tipo_animais_table
+  ) IS
+  BEGIN
+    p_result := tipo_animais_table();
+    FOR reg IN (
+      SELECT a.id_animal, a.nome AS nome_animal, h.nome AS nome_habitat
+      FROM Animal a
+      LEFT JOIN Habitat h ON a.id_habitat = h.cod
+      WHERE a.id_habitat = p_id_habitat
+    ) LOOP
+      p_result.EXTEND;
+      p_result(p_result.LAST) := tipo_animal_record(reg.id_animal, reg.nome_animal, reg.nome_habitat);
+    END LOOP;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE_APPLICATION_ERROR(-20011, 'Erro em prc_listar_animais_por_habitat_pkg: ' || SQLERRM);
+  END prc_listar_animais_por_habitat_pkg;
+
+  PROCEDURE prc_atualiza_salario_pkg(
+    p_id_pes IN NUMBER,
+    p_novo_salario IN NUMBER,
+    p_salario_antigo OUT NUMBER,
+    p_contador IN OUT NUMBER
+  ) IS
+  BEGIN
+    SELECT salario INTO p_salario_antigo FROM Funcionario WHERE id_pes = p_id_pes;
+
+    UPDATE Funcionario
+    SET salario = p_novo_salario
+    WHERE id_pes = p_id_pes;
+
+    IF SQL%ROWCOUNT = 0 THEN
+      RAISE_APPLICATION_ERROR(-20012, 'Funcionario nao encontrado: ' || p_id_pes);
+    END IF;
+
+    p_contador := NVL(p_contador,0) + 1;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      p_salario_antigo := NULL;
+      RAISE_APPLICATION_ERROR(-20013, 'Sem salario anterior (pkg): ' || p_id_pes);
+    WHEN OTHERS THEN
+      RAISE;
+  END prc_atualiza_salario_pkg;
+
+END zoo_pkg;
+/
+
+-- CHECK 19: trigger que valida e audita Ingresso
+CREATE OR REPLACE TRIGGER trg_ingresso_valida
+BEFORE INSERT OR UPDATE ON Ingresso
+FOR EACH ROW
+DECLARE
+  v_msg VARCHAR2(4000);
+BEGIN
+  -- valida quantidade
+  IF :NEW.quantidade IS NULL OR :NEW.quantidade <= 0 THEN
+    v_msg := 'Quantidade invalida em Ingresso: ' || NVL(TO_CHAR(:NEW.quantidade), 'NULL');
+    RAISE_APPLICATION_ERROR(-20020, v_msg);
+  END IF;
+
+  -- valida valor
+  IF :NEW.valor IS NULL OR :NEW.valor <= 0 THEN
+    v_msg := 'Valor invalido em Ingresso: ' || NVL(TO_CHAR(:NEW.valor), 'NULL');
+    RAISE_APPLICATION_ERROR(-20021, v_msg);
+  END IF;
+
+  -- Exemplo de log: inserir em tabela de auditoria (se existir)
+  BEGIN
+    INSERT INTO Audi_Funci(funId, nome, data_aud, descricao)
+    VALUES(
+      :NEW.id_atendente, -- como exemplo, usamos id_atendente como user
+      (SELECT nome FROM Pessoa WHERE id_pessoa = :NEW.id_atendente),
+      SYSDATE,
+      CASE
+        WHEN INSERTING THEN 'INSERCAO_INGRESSO'
+        WHEN UPDATING THEN 'ATUALIZACAO_INGRESSO'
+        ELSE 'OUTRO'
+      END
+    );
+  EXCEPTION
+    WHEN OTHERS THEN
+      
+      NULL; 
+  END;
+
+END;
+/
