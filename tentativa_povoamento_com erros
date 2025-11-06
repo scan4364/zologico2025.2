@@ -1,0 +1,462 @@
+-- ============================================================================
+-- POVOAMENTO COMPLETO (Oracle-ready)
+-- 10 registros por tabela (dados realistas)
+-- ============================================================================
+-- 1) ENDERECO (10)
+INSERT ALL
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52171-011','Rua Santo Elias','Tamarineira','Recife',NULL,'210','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52071-000','Rua Padre Roma','Tamarineira','Recife',NULL,'88','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('51030-030','Av. Boa Viagem','Boa Viagem','Recife','Apto 902','3200','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50731-000','Rua Benfica','Madalena','Recife',NULL,'190','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50070-480','Rua do Riachuelo','Boa Vista','Recife',NULL,'65','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('53050-100','Rua do Farol','Rio Doce','Olinda',NULL,'400','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('54470-000','Rua da Aurora','Candeias','Jaboatao dos Guararapes',NULL,'150','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50920-000','Rua José Rufino','Areias','Recife',NULL,'800','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50050-040','Rua da Imperatriz','Santo Antônio','Recife',NULL,'320','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52010-000','Rua da Aurora','Boa Vista','Recife',NULL,'500','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52051-140','Rua Amélia','Graças','Recife',NULL,'112','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52050-100','Rua da Hora','Espinheiro','Recife',NULL,'700','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52030-220','Rua do Futuro','Graças','Recife',NULL,'344','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('53320-000','Rua Major Lins e Silva','Jardim Atlântico','Olinda',NULL,'234','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50010-000','Rua das Acacias','Boa Viagem','Recife', NULL, '120','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52020-111','Av. Domingos Ferreira','Boa Viagem','Recife','Apto 501','1100','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52060-200','Rua da Paz','Casa Forte','Recife', NULL, '45','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('54400-100','Av. Beira Mar','Piedade','Jaboatao dos Guararapes','Apto 1502','1000','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('53030-010','Rua do Sol','Bairro Novo', 'Olinda', NULL, '2200','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('52020-220','Rua do Espinheiro','Espinheiro','Recife','Casa B','700','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50610-120','Rua Real da Torre','Madalena','Recife', NULL, '1234','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('50740-560','Av. Afonso Olindense','Varzea','Recife','Cidade Universitaria','1600','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('53437-000','Av. Dr. Claudio Jose Gueiros Leite','Janga','Paulista', NULL, '4500','Brasil')
+  INTO Endereco (cep, rua, bairro, cidade, complemento, numero, pais) VALUES ('54160-000','Av. Gal. Manoel Rabelo','Socorro','Jaboatao dos Guararapes','Apto 404','3000','Brasil')
+SELECT * FROM dual;
+
+
+-- 2) HABITAT (10)
+INSERT ALL
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (1,'Savana Africana',5000.00,'Terrestre Aberto',28.5,60.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (2,'Floresta Tropical Umida',3500.00,'Mata Densa',25.0,85.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (3,'Recinto de Primatas',2000.00,'Arborizado com Estruturas',26.0,75.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (4,'Serpentario',500.00,'Terrario Controlado',30.0,70.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (5,'Tanque de Animais Aquaticos',8000.00,'Aquatico de Agua Doce',24.0,100.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (6,'Ala das Aves de Rapina',1500.00,'Aviario de Grande Porte',27.0,65.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (7,'Habitat Noturno',1000.00,'Controlado com Ciclo Invertido',22.0,60.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (8,'Borboletario',800.00,'Jardim Climatizado',27.0,80.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (9,'Setor de Quarentena',1200.00,'Area Isolada de Manejo',25.0,70.0)
+  INTO Habitat (cod, nome, espaco_disponivel, tipo, temperatura, umidade) VALUES (10,'Fazendinha Animais Domesticos',1500.00,'Terrestre Aberto (Rural)',29.0,65.0)
+SELECT * FROM dual;
+
+
+-- 3) PROJETO_PESQUISA (10)
+INSERT ALL
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Conservacao_Panthera', 'Conservação de grandes felinos', TO_DATE('2020-01-10','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Genetica_Pop', 'Genética de populações de espécies ameaçadas', TO_DATE('2021-05-15','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Repro_Anfibios', 'Reprodução assistida de anfíbios', TO_DATE('2022-02-01','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Saude_Aquatica', 'Ecologia e saúde de ecossistemas aquáticos', TO_DATE('2021-08-10','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Avian_Conserv', 'Conservação de aves migratórias', TO_DATE('2019-03-20','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Bovinos_Domesticos', 'Saúde e manejo de bovinos domésticos', TO_DATE('2016-05-10','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Herpetologia_Maneg', 'Manejo e conservação de répteis e anfíbios', TO_DATE('2023-02-10','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Comportamento_Primatas', 'Estudos sobre comportamento social de primatas', TO_DATE('2017-06-20','YYYY-MM-DD'), NULL)
+  INTO Projeto_Pesquisa (titulo, linha_pesquisa, data_inicio, data_fim)
+    VALUES ('Borboletas_Ecologia', 'Ecologia de borboletas tropicais', TO_DATE('2024-01-15','YYYY-MM-DD'), NULL)
+SELECT * FROM dual;
+
+-- 4) PROCEDIMENTOS (10)
+INSERT ALL
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (1,'Vacina Antirrábica','Aplicacao de vacina tailormade para especies X')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (2,'Desparasitação','Desparasitação oral ou injetavel conforme especie')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (3,'Exame Sangue','Hemograma completo e bioquimica')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (4,'Ultrassom','Ultrassonografia abdominal')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (5,'Radiografia','Radiografia simples e contrastada')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (6,'Cirurgia Simples','Pequeno procedimento cirurgico')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (7,'Endoscopia','Endoscopia digestiva')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (8,'Coleta Fezes','Exame parasitologico de fezes')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (9,'Teste DNA','Analise genetica basica')
+  INTO Procedimentos (ID_Procedimento, Nome, Descrição) VALUES (10,'Exame Urina','Urina completa')
+SELECT * FROM dual;
+
+
+-- 5) ATIVIDADE (10)
+INSERT ALL
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (1, TO_DATE('2025-06-10','YYYY-MM-DD'), TO_DATE('2025-06-10 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-06-10 10:30','YYYY-MM-DD HH24:MI'), 'Palestra','Palestra sobre Conservacao')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (2, TO_DATE('2025-07-05','YYYY-MM-DD'), TO_DATE('2025-07-05 14:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-05 15:30','YYYY-MM-DD HH24:MI'), 'Oficina','Oficina de Identificacao de Aves')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (3, TO_DATE('2025-08-12','YYYY-MM-DD'), TO_DATE('2025-08-12 10:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-08-12 11:00','YYYY-MM-DD HH24:MI'), 'Visita','Visita guiada ao serpentario')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (4, TO_DATE('2025-09-01','YYYY-MM-DD'), TO_DATE('2025-09-01 09:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-09-01 11:00','YYYY-MM-DD HH24:MI'), 'Atividade','Soltura de borboletas')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (5, TO_DATE('2025-05-20','YYYY-MM-DD'), TO_DATE('2025-05-20 13:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-05-20 14:00','YYYY-MM-DD HH24:MI'), 'Palestra','Palestra sobre Alimentacao Animal')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (6, TO_DATE('2025-04-10','YYYY-MM-DD'), TO_DATE('2025-04-10 10:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-04-10 12:00','YYYY-MM-DD HH24:MI'), 'Oficina','Oficina de Biologia para Escolas')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (7, TO_DATE('2025-03-15','YYYY-MM-DD'), TO_DATE('2025-03-15 15:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-03-15 16:00','YYYY-MM-DD HH24:MI'), 'Visita','Aula pratica de cuidados')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (8, TO_DATE('2025-02-25','YYYY-MM-DD'), TO_DATE('2025-02-25 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-02-25 10:00','YYYY-MM-DD HH24:MI'), 'Evento','Dia do Voluntariado')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (9, TO_DATE('2025-01-30','YYYY-MM-DD'), TO_DATE('2025-01-30 11:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-01-30 12:00','YYYY-MM-DD HH24:MI'), 'Palestra','Saude Publica e Fauna')
+  INTO Atividade (cod, data, hora_inicio, hora_fim, tipo, nome) VALUES (10, TO_DATE('2025-11-01','YYYY-MM-DD'), TO_DATE('2025-11-01 08:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-11-01 10:00','YYYY-MM-DD HH24:MI'), 'Oficina','Monitoramento de Habitats')
+SELECT * FROM dual;
+
+
+-- 6) PESSOA
+INSERT ALL
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (1,'50010-000','Ana Clara Gomes','11122233344', TO_DATE('1975-08-15','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (2,'52020-111','Bruno Medeiros','22233344455', TO_DATE('1982-04-20','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (3,'54400-100','Livia Mendes','13131313131', TO_DATE('1980-01-10','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (4,'53030-010','Marcos Furtado','14141414141', TO_DATE('1985-05-05','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (5,'52020-220','Patricia Ramos','15151515151', TO_DATE('1990-02-20','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (6,'50610-120','Carla Dias','33344455566', TO_DATE('1990-11-30','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (7,'52060-200','Daniel Alves','44455566677', TO_DATE('1988-01-25','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (8,'52020-220','Eduarda Lima','55566677788', TO_DATE('1995-07-10','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (9,'50610-120','Fabio Costa','66677788899', TO_DATE('1992-09-05','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (10,'50740-560','Valeria Borges','16161616161', TO_DATE('1989-09-15','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (11,'52171-011','Tiago Guedes','17171717171', TO_DATE('1993-04-12','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (12,'53437-000','Gabriela Pereira','77788899900', TO_DATE('1985-03-12','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (13,'52071-000','Heitor Barbosa','88899900011', TO_DATE('1998-06-18','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (14,'51030-030','Sandra Mello','18181818181', TO_DATE('1991-07-20','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (15,'50731-000','Isabela Rocha','99900011122', TO_DATE('1999-12-01','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (16,'50070-480','Joao Vitor Santos','00011122233', TO_DATE('2001-02-28','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (17,'53437-000','Ricardo Jales','19191919191', TO_DATE('1997-11-11','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (18,'50740-560','Karla Martins','12345678900', TO_DATE('2003-05-22','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (19,'52171-011','Lucas Andrade','09876543210', TO_DATE('2004-08-10','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (20,'53050-100','Nivea Costa','20202020202', TO_DATE('2004-01-30','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (21,'54470-000','Otavio Lins','21212121212', TO_DATE('2002-10-05','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (22,'50920-000','William Rocha','22222222222', TO_DATE('2003-07-07','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (23,'50050-040','Maria Oliveira','11223344556', TO_DATE('1991-07-19','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (24,'50070-480','Pedro Souza','22334455667', TO_DATE('2018-10-02','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (25,'52010-000','Sofia Almeida','33445566778', TO_DATE('1989-04-14','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (26,'52051-140','Rafael Fernandes','44556677889', TO_DATE('2020-01-20','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (27,'52050-100','Beatriz Cavalcanti','55667788990', TO_DATE('1993-09-30','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (28,'52030-220','Gustavo Barros','66778899001', TO_DATE('1980-12-25','YYYY-MM-DD'),'M')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (29,'53320-000','Larissa Andrade','77889900112', TO_DATE('2005-03-18','YYYY-MM-DD'),'F')
+  INTO Pessoa (id_pessoa, cep, nome, cpf, data_nascimento, sexo) VALUES (30,'54160-000','Felipe Nascimento','88990011223', TO_DATE('1995-11-23','YYYY-MM-DD'),'M')
+SELECT * FROM dual;
+
+
+-- 7) VISITANTE (10) -> usa Pessoa ids 21..30 as visitantes
+INSERT ALL
+  INTO Visitante (id_pes) VALUES (21)
+  INTO Visitante (id_pes) VALUES (22)
+  INTO Visitante (id_pes) VALUES (23)
+  INTO Visitante (id_pes) VALUES (24)
+  INTO Visitante (id_pes) VALUES (25)
+  INTO Visitante (id_pes) VALUES (26)
+  INTO Visitante (id_pes) VALUES (27)
+  INTO Visitante (id_pes) VALUES (28)
+  INTO Visitante (id_pes) VALUES (29)
+  INTO Visitante (id_pes) VALUES (30)
+SELECT * FROM dual;
+
+
+-- 8) CRIANCA (10) -> one child per visitante (id_pulseira unique)
+INSERT ALL
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1001,21,'Lucas Junior',6)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1002,22,'Mariana',8)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1003,23,'Pedro Filho',4)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1004,24,'Isabela',7)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1005,25,'Mateus',5)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1006,26,'Sofia Jr',3)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1007,27,'Gabriela Jr',9)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1008,28,'Enzo',4)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1009,29,'Laura',6)
+  INTO Crianca (id_pulseira, id_visitante, nome, idade) VALUES (1010,30,'Rafael Jr',2)
+SELECT * FROM dual;
+
+
+-- 9) BRINDE (10) -> references Crianca (id_pulseira, id_visitante) and Atividade
+INSERT ALL
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5001,1001,21,1,'Chaveiro Leao','Chaveiro tematico de leao')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5002,1002,22,2,'Cartela Aves','Cartela com especies locais')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5003,1003,23,3,'Adesivo Serpente','Adesivo educativo')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5004,1004,24,4,'Livreto Borboleta','Livreto ilustrado')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5005,1005,25,5,'Cartilha Alimentacao','Cartilha de boas práticas')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5006,1006,26,6,'Caderninho','Caderninho de campo')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5007,1007,27,7,'Folheto Pesquisas','Resumo de projetos')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5008,1008,28,8,'Camiseta Voluntario','Camiseta do dia do voluntariado')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5009,1009,29,9,'Caneta Educador','Caneta personalizada')
+  INTO Brinde (ID_Brinde, id_pulseira, id_visitante, id_atividade, Nome, Descrição) VALUES (5010,1010,30,10,'Selo Participante','Selo de participacao')
+SELECT * FROM dual;
+
+
+-- 10) FUNCIONARIO (10) -> ids 1..10 ; id_estagiario left NULL for now
+INSERT ALL
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (1, NULL, NULL, TO_DATE('2010-03-15','YYYY-MM-DD'), 'Diretor Geral', 18000.00, TO_DATE('2010-03-15','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (2, NULL, 1, TO_DATE('2012-07-20','YYYY-MM-DD'), 'Veterinario', 13500.00, TO_DATE('2012-07-20','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (3, NULL, 1, TO_DATE('2014-06-10','YYYY-MM-DD'), 'Gerente de Operacoes', 11000.00, TO_DATE('2014-06-10','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (4, NULL, 2, TO_DATE('2015-09-01','YYYY-MM-DD'), 'Cuidador Chefe', 6000.00, TO_DATE('2015-09-01','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (5, NULL, 3, TO_DATE('2019-08-12','YYYY-MM-DD'), 'Pesquisador Chefe', 9500.00, TO_DATE('2019-08-12','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (6, NULL, 3, TO_DATE('2021-05-20','YYYY-MM-DD'), 'Gerente de TI', 9000.00, TO_DATE('2021-05-20','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (7, NULL, 4, TO_DATE('2018-02-10','YYYY-MM-DD'), 'Veterinario Senior', 9800.00, TO_DATE('2018-02-10','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (8, NULL, 4, TO_DATE('2015-09-01','YYYY-MM-DD'), 'Cuidador', 4100.00, TO_DATE('2015-09-01','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (9, NULL, 5, TO_DATE('2022-06-15','YYYY-MM-DD'), 'Atendente Chefe', 4200.00, TO_DATE('2022-06-15','YYYY-MM-DD'), NULL)
+  INTO Funcionario (id_pes, id_estagiario, id_supervisor, data_admissao, tipo, salario, data_inicio, data_fim) VALUES (10, NULL, 5, TO_DATE('2023-03-01','YYYY-MM-DD'), 'Educador Chefe', 5100.00, TO_DATE('2023-03-01','YYYY-MM-DD'), NULL)
+SELECT * FROM dual;
+
+
+-- 11) ESTAGIARIO (10) -> associate to the same funcionario ids 1..10 (id_func = id_pes)
+INSERT ALL
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (1, 'UFRPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (2, 'UFPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (3, 'UPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (4, 'IFPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (5, 'UFPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (6, 'UFRPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (7, 'UPE')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (8, 'Faculdade X')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (9, 'Faculdade Y')
+  INTO Estagiario (id_func, instituicao_ensino) VALUES (10, 'Faculdade Z')
+SELECT * FROM dual;
+
+-- 11b) Atualiza Funcionario.id_estagiario = id_pes (preenche o relacionamento circular)
+UPDATE Funcionario SET id_estagiario = id_pes WHERE id_pes BETWEEN 1 AND 10;
+
+
+-- 12) VETERINARIO (10)
+INSERT ALL
+  INTO Veterinario (id_func, crmv) VALUES (1,'CRMV-PE-1001')
+  INTO Veterinario (id_func, crmv) VALUES (2,'CRMV-PE-1002')
+  INTO Veterinario (id_func, crmv) VALUES (3,'CRMV-PE-1003')
+  INTO Veterinario (id_func, crmv) VALUES (4,'CRMV-PE-1004')
+  INTO Veterinario (id_func, crmv) VALUES (5,'CRMV-PE-1005')
+  INTO Veterinario (id_func, crmv) VALUES (6,'CRMV-PE-1006')
+  INTO Veterinario (id_func, crmv) VALUES (7,'CRMV-PE-1007')
+  INTO Veterinario (id_func, crmv) VALUES (8,'CRMV-PE-1008')
+  INTO Veterinario (id_func, crmv) VALUES (9,'CRMV-PE-1009')
+  INTO Veterinario (id_func, crmv) VALUES (10,'CRMV-PE-1010')
+SELECT * FROM dual;
+
+
+-- 13) CUIDADOR (10)
+INSERT ALL
+  INTO Cuidador (id_func, area_certificacao) VALUES (1,'Manejo de Grandes Felinos')
+  INTO Cuidador (id_func, area_certificacao) VALUES (2,'Manejo de Ungulados')
+  INTO Cuidador (id_func, area_certificacao) VALUES (3,'Primatas Novo Mundo')
+  INTO Cuidador (id_func, area_certificacao) VALUES (4,'Herpetologia')
+  INTO Cuidador (id_func, area_certificacao) VALUES (5,'Aves de Rapina')
+  INTO Cuidador (id_func, area_certificacao) VALUES (6,'Animais Aquaticos')
+  INTO Cuidador (id_func, area_certificacao) VALUES (7,'Caprinos e Ovinos')
+  INTO Cuidador (id_func, area_certificacao) VALUES (8,'Pequenos Mamiferos')
+  INTO Cuidador (id_func, area_certificacao) VALUES (9,'Equinos e Grandes Animais')
+  INTO Cuidador (id_func, area_certificacao) VALUES (10,'Manejo de Animais Domesticos')
+SELECT * FROM dual;
+
+
+-- 14) PESQUISADOR (10)
+INSERT ALL
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (1,'Comportamento de Primatas')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (2,'Genetica de Populacoes')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (3,'Reproducao de Anfibios')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (4,'Ecologia Aquatica')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (5,'Conservacao de Aves')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (6,'Bem estar animal')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (7,'Doencas Infectocontagiosas')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (8,'Monitoramento de Habitats')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (9,'Etnobiologia')
+  INTO Pesquisador (id_func, area_pesquisa) VALUES (10,'Saude Publica Veterinaria')
+SELECT * FROM dual;
+
+
+-- 15) EDUCADOR (10)
+INSERT ALL
+  INTO Educador (id_func, area_formacao) VALUES (1,'Ciencias Biologicas e Educacao Ambiental')
+  INTO Educador (id_func, area_formacao) VALUES (2,'Biologia e Museumologia')
+  INTO Educador (id_func, area_formacao) VALUES (3,'Pedagogia com foco em Educacao Ambiental')
+  INTO Educador (id_func, area_formacao) VALUES (4,'Biologia Marinha')
+  INTO Educador (id_func, area_formacao) VALUES (5,'Gestao Ambiental')
+  INTO Educador (id_func, area_formacao) VALUES (6,'Ciencias Biologicas')
+  INTO Educador (id_func, area_formacao) VALUES (7,'Educacao e Extensao')
+  INTO Educador (id_func, area_formacao) VALUES (8,'Museologia e Comunicacao')
+  INTO Educador (id_func, area_formacao) VALUES (9,'Pedagogia')
+  INTO Educador (id_func, area_formacao) VALUES (10,'Educacao Ambiental')
+SELECT * FROM dual;
+
+
+-- 16) ATENDENTE (10)
+INSERT ALL
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (1,1,'Manha','Bilheteria Principal')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (2,2,'Tarde','Bilheteria Secundaria')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (3,3,'Manha','Lideranca de Bilheteria')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (4,4,'Tarde','Atendimento ao Visitante')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (5,5,'Manha','Loja e Atendimento')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (6,6,'Tarde','Informacoes')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (7,7,'Manha','Reservas Educativas')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (8,8,'Tarde','Vendas Corporativas')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (9,9,'Manha','Reports e Relatorios')
+  INTO Atendente (id_func, guiche, turno, setor_atendimento) VALUES (10,10,'Tarde','Atendimento de Eventos')
+SELECT * FROM dual;
+
+
+-- 17) ANIMAL (10) -> cod_animal 1..10, apontando para habitats 1..10
+INSERT ALL
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (1,1,'Mufasa','M',10,'Carnivoro','Vacinas em dia')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (2,1,'Sarabi','F',9,'Carnivoro','Sem eventos')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (3,1,'Simba','M',3,'Carnivoro','Parto natural da mae')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (4,2,'Jumbo','M',40,'Herbivoro','Resgatado: osteoartrite leve')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (5,3,'Melman','M',15,'Herbivoro','Checkup anual realizado')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (6,4,'Horus','M',8,'Carnivoro','Manejo em terrario controlado')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (7,5,'Gigante','M',6,'Carnivoro','Periodico monitoramento de sangue')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (8,6,'Zeus','M',25,'Carnivoro','Reabilitado de resgate')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (9,4,'Sapo-01','M',2,'Insetivoro','Nascido em cativeiro')
+  INTO Animal (id_animal, id_habitat, nome, sexo, idade, dieta, historico_saude) VALUES (10,10,'Billy','M',4,'Herbivoro','Vacinas e vermifugacao ok')
+SELECT * FROM dual;
+
+
+-- 18) ATENDIMENTO_VETERINARIO (10) -> id_atendimento 2001..2010
+INSERT ALL
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2001,1,1, TO_DATE('2024-02-01','YYYY-MM-DD'),'Consulta rotina')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2002,2,2, TO_DATE('2024-03-10','YYYY-MM-DD'),'Lesao leve')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2003,3,3, TO_DATE('2024-04-08','YYYY-MM-DD'),'Seguimento pos-parto')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2004,4,4, TO_DATE('2024-05-12','YYYY-MM-DD'),'Problema digestivo')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2005,5,5, TO_DATE('2024-06-20','YYYY-MM-DD'),'Vacinação')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2006,6,6, TO_DATE('2024-07-15','YYYY-MM-DD'),'Controle de parasitas')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2007,7,7, TO_DATE('2024-08-01','YYYY-MM-DD'),'Exame de rotina')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2008,8,8, TO_DATE('2024-09-11','YYYY-MM-DD'),'Tratamento de ferida')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2009,9,9, TO_DATE('2024-10-02','YYYY-MM-DD'),'Controle de populacao')
+  INTO Atendimento_Veterinario (id_atendimento, id_animal, id_veterinario, Data, Diagnostico) VALUES (2010,10,10, TO_DATE('2024-11-25','YYYY-MM-DD'),'Rotina de saude')
+SELECT * FROM dual;
+
+
+-- 19) CONSULTA_REALIZA_PROCEDIMENTO (10) -> link procedimentos com atendimentos
+INSERT ALL
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2001,3)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2002,5)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2003,1)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2004,4)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2005,1)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2006,2)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2007,8)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2008,6)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2009,9)
+  INTO Consulta_Realiza_Procedimento (id_atendimento, ID_Procedimento) VALUES (2010,10)
+SELECT * FROM dual;
+
+
+-- 20) CUIDADOR_CUIDA_ANIMAL (10)
+INSERT ALL
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (1,4, TO_DATE('2017-01-01','YYYY-MM-DD'),'Responsavel por toda a area')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (2,4, TO_DATE('2018-02-01','YYYY-MM-DD'),'Rotina de alimentacao')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (3,8, TO_DATE('2020-03-10','YYYY-MM-DD'),'Treinos de comportamento')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (4,7, TO_DATE('2012-05-01','YYYY-MM-DD'),'Cuidados especias')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (5,8, TO_DATE('2019-07-02','YYYY-MM-DD'),'Monitoramento nutricional')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (6,4, TO_DATE('2021-08-15','YYYY-MM-DD'),'Manejo de terrario')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (7,6, TO_DATE('2016-04-01','YYYY-MM-DD'),'Alimentacao controlada')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (8,9, TO_DATE('2013-09-10','YYYY-MM-DD'),'Reabilitacao pos-resgate')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (9,5, TO_DATE('2023-05-02','YYYY-MM-DD'),'Cuidados para anfibios')
+  INTO Cuidador_Cuida_Animal (id_animal, id_cuidador, data_inicio_responsabilidade, observacoes) VALUES (10,10, TO_DATE('2022-01-10','YYYY-MM-DD'),'Rotina de fazendinha')
+SELECT * FROM dual;
+
+
+-- 21) ANIMAL_PARTICIPA_PROJETO (10)
+INSERT ALL
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (1,'Conservacao_Panthera','Sujeito de estudo','Mensal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (2,'Conservacao_Panthera','Sujeito de estudo','Mensal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (3,'Comportamento_Primatas','Observado em grupo','Semanal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (4,'Bovinos_Domesticos','Monitoramento de saude','Trimestral')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (5,'Comportamento_Primatas','Observado isoladamente','Semanal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (6,'Herpetologia_Maneg','Populacao em terrario','Mensal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (7,'Saude_Aquatica','Biometria e coleta','Mensal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (8,'Avian_Conserv','Reabilitacao','Mensal')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (9,'Repro_Anfibios','Reproducao assistida','Diaria')
+  INTO Animal_Participa_ProjetoDePesquisa (id_animal, titulo_projeto, papel_no_projeto, frequencia_observacao) VALUES (10,'Bovinos_Domesticos','Bem-estar','Semestral')
+SELECT * FROM dual;
+
+
+-- 22) VISITANTE_PARTICIPA_ATIVIDADE (10)
+INSERT ALL
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (21,1)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (22,2)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (23,3)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (24,4)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (25,5)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (26,6)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (27,7)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (28,8)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (29,9)
+  INTO Visitante_Participa_Atividade (id_visitante, id_atividade) VALUES (30,10)
+SELECT * FROM dual;
+
+
+-- 23) CRIANCA_PARTICIPA_ATIVIDADE (10)
+INSERT ALL
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1001,21,1)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1002,22,2)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1003,23,3)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1004,24,4)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1005,25,5)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1006,26,6)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1007,27,7)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1008,28,8)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1009,29,9)
+  INTO Crianca_participa_atividade (id_pulseira, id_visitante, id_atividade) VALUES (1010,30,10)
+SELECT * FROM dual;
+
+
+-- 24) PESQUISADOR_DESENVOLVE_PROJETO (10)
+INSERT ALL
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (1,'Conservacao_Panthera','Lider', TO_DATE('2021-01-15','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (2,'Genetica_Pop','Coordenador', TO_DATE('2020-07-10','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (3,'Repro_Anfibios','Pesquisador Principal', TO_DATE('2022-04-01','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (4,'Saude_Aquatica','Assistente', TO_DATE('2021-10-12','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (5,'Avian_Conserv','Lider de Campo', TO_DATE('2019-11-20','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (6,'Bovinos_Domesticos','Coleta de dados', TO_DATE('2016-09-05','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (7,'Herpetologia_Maneg','Coordenador', TO_DATE('2023-02-15','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (8,'Comportamento_Primatas','Analista', TO_DATE('2017-06-20','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (9,'Borboletas_Ecologia','Assistente', TO_DATE('2024-02-01','YYYY-MM-DD'))
+  INTO Pesquisador_Desenvolve_ProjetoDePesquisa (id_pesquisador, titulo_projeto, funcao, data_entrada) VALUES (10,'Repro_Anfibios','Supervisor', TO_DATE('2022-01-10','YYYY-MM-DD'))
+SELECT * FROM dual;
+
+
+
+
+-- 25) INGRESSO (10) -> cod 3001..3010
+INSERT ALL
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3001,21,1,'Cartao', TO_DATE('2025-06-01','YYYY-MM-DD'),2, TO_DATE('2025-06-10','YYYY-MM-DD'),'Inteira', 80.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3002,22,2,'Dinheiro', TO_DATE('2025-06-02','YYYY-MM-DD'),1, TO_DATE('2025-07-05','YYYY-MM-DD'),'Meia', 40.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3003,23,3,'Cartao', TO_DATE('2025-06-15','YYYY-MM-DD'),4, TO_DATE('2025-08-12','YYYY-MM-DD'),'Inteira', 160.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3004,24,4,'Pix', TO_DATE('2025-07-01','YYYY-MM-DD'),2, TO_DATE('2025-09-01','YYYY-MM-DD'),'Inteira', 80.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3005,25,5,'Cartao', TO_DATE('2025-05-12','YYYY-MM-DD'),1, TO_DATE('2025-05-20','YYYY-MM-DD'),'Meia', 40.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3006,26,6,'Dinheiro', TO_DATE('2025-04-20','YYYY-MM-DD'),3, TO_DATE('2025-04-10','YYYY-MM-DD'),'Inteira', 120.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3007,27,7,'Cartao', TO_DATE('2025-03-05','YYYY-MM-DD'),2, TO_DATE('2025-03-15','YYYY-MM-DD'),'Inteira', 80.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3008,28,8,'Pix', TO_DATE('2025-02-25','YYYY-MM-DD'),1, TO_DATE('2025-02-25','YYYY-MM-DD'),'Meia', 40.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3009,29,9,'Cartao', TO_DATE('2025-01-28','YYYY-MM-DD'),5, TO_DATE('2025-01-30','YYYY-MM-DD'),'Inteira', 200.00)
+  INTO Ingresso (cod, id_visitante, id_atendente, forma_pagamento, data_compra, quantidade, data, tipo, valor) VALUES (3010,30,10,'Dinheiro', TO_DATE('2025-10-25','YYYY-MM-DD'),2, TO_DATE('2025-11-01','YYYY-MM-DD'),'Inteira', 80.00)
+SELECT * FROM dual;
+
+
+-- 26) ESTAGIO (10)
+INSERT ALL
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4001,1,'Ativo',TO_DATE('2025-03-01','YYYY-MM-DD'),TO_DATE('2026-03-01','YYYY-MM-DD'),12,'Veterinaria')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4002,2,'Ativo',TO_DATE('2025-04-01','YYYY-MM-DD'),TO_DATE('2026-04-01','YYYY-MM-DD'),12,'Pesquisa')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4003,3,'Ativo',TO_DATE('2025-05-01','YYYY-MM-DD'),TO_DATE('2026-05-01','YYYY-MM-DD'),12,'Educacao')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4004,4,'Ativo',TO_DATE('2025-06-01','YYYY-MM-DD'),TO_DATE('2026-06-01','YYYY-MM-DD'),12,'Manutencao')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4005,5,'Ativo',TO_DATE('2025-07-01','YYYY-MM-DD'),TO_DATE('2026-07-01','YYYY-MM-DD'),12,'Biologia')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4006,6,'Ativo',TO_DATE('2025-08-01','YYYY-MM-DD'),TO_DATE('2026-08-01','YYYY-MM-DD'),12,'TI')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4007,7,'Ativo',TO_DATE('2025-09-01','YYYY-MM-DD'),TO_DATE('2026-09-01','YYYY-MM-DD'),12,'Veterinaria')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4008,8,'Ativo',TO_DATE('2025-10-01','YYYY-MM-DD'),TO_DATE('2026-10-01','YYYY-MM-DD'),12,'Educacao')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4009,9,'Ativo',TO_DATE('2025-11-01','YYYY-MM-DD'),TO_DATE('2026-11-01','YYYY-MM-DD'),12,'Operacoes')
+  INTO Estagio (cod, id_estagiario, status, data_inicio, data_fim, duracao, area) VALUES (4010,10,'Ativo',TO_DATE('2025-12-01','YYYY-MM-DD'),TO_DATE('2026-12-01','YYYY-MM-DD'),12,'Cuidado Animal')
+SELECT * FROM dual;
+
+
+-- 27) HISTORICO_ESTADIA (10)
+INSERT ALL
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (1,1,TO_DATE('2017-05-20','YYYY-MM-DD'),NULL,'Chegada via troca')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (2,1,TO_DATE('2016-01-20','YYYY-MM-DD'),NULL,'Nascido no zoo')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (3,1,TO_DATE('2022-11-05','YYYY-MM-DD'),NULL,'Nascido no zoo')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (4,1,TO_DATE('1990-01-10','YYYY-MM-DD'),NULL,'Resgate IBAMA')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (5,1,TO_DATE('2010-07-30','YYYY-MM-DD'),NULL,'Nascido no zoo')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (6,4,TO_DATE('2017-06-05','YYYY-MM-DD'),NULL,'Nascido no zoo')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (7,5,TO_DATE('2016-02-02','YYYY-MM-DD'),NULL,'Doacao')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (8,6,TO_DATE('2002-09-10','YYYY-MM-DD'),NULL,'Resgate')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (9,4,TO_DATE('2023-05-01','YYYY-MM-DD'),NULL,'Nascido no zoo')
+  INTO Historico_Estadia (id_animal, id_habitat, Data_entrada, Data_saida, motivo_transferencia) VALUES (10,10,TO_DATE('2021-03-10','YYYY-MM-DD'),NULL,'Nascido no zoo')
+SELECT * FROM dual;
+
+
+-- ============================================================================
+-- FIM DO POVOAMENTO
+-- ============================================================================
+
+
+
+
