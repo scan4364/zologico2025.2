@@ -1,0 +1,273 @@
+// Banco: ReservaQuadras (mesmo estilo do seu exemplo)
+db = db.getSiblingDB("ReservaQuadras");
+
+// --- Cria coleções (opcional) ---
+db.createCollection("Usuarios");
+db.createCollection("Clubes");
+db.createCollection("Quadras");
+db.createCollection("Reservas");
+db.createCollection("Eventos");
+db.createCollection("Convidados");
+db.createCollection("Convites");
+db.createCollection("Avaliacoes");
+db.createCollection("Usuario_Participa_Evento");
+
+// ---------------------
+// População: Usuarios
+// ---------------------
+db.Usuarios.insertMany([
+  { _id: 1, Nome: "Ana Pereira", Sexo: "F", Data_Nascimento: "1995-04-12", Telefone: "81988887777", CPF: "12345678901",
+    CEP: "52000000", Rua: "Rua das Flores", Numero: "123", Complemento: "Apto 201" },
+  { _id: 2, Nome: "João Silva", Sexo: "M", Data_Nascimento: "1990-09-20", Telefone: "81977776666", CPF: "98765432100",
+    CEP: "52010000", Rua: "Avenida Principal", Numero: "500", Complemento: "" },
+  { _id: 3, Nome: "Mariana Souza", Sexo: "F", Data_Nascimento: "2000-01-30", Telefone: "81966665555", CPF: "11122233344",
+    CEP: "52020000", Rua: "Praça Central", Numero: "10", Complemento: "Casa" },
+  { _id: 4, Nome: "Pedro Martins", Sexo: "M", Data_Nascimento: "1988-12-05", Telefone: "81955554444", CPF: "22233344455",
+    CEP: "52021000", Rua: "Rua do Mercado", Numero: "45", Complemento: "Loja" },
+  { _id: 5, Nome: "Luiza Costa", Sexo: "F", Data_Nascimento: "1997-07-18", Telefone: "81944443333", CPF: "33344455566",
+    CEP: "52022000", Rua: "Alameda Verde", Numero: "78", Complemento: "Fundos" },
+  { _id: 6, Nome: "Bruno Carvalho", Sexo: "M", Data_Nascimento: "1985-03-02", Telefone: "81933332222", CPF: "44455566677",
+    CEP: "52023000", Rua: "Rua Nova", Numero: "90", Complemento: "Sala 2" },
+  { _id: 7, Nome: "Carla Almeida", Sexo: "F", Data_Nascimento: "1992-11-11", Telefone: "81922221111", CPF: "55566677788",
+    CEP: "52024000", Rua: "Rua Azul", Numero: "150", Complemento: "" },
+  { _id: 8, Nome: "Ricardo Gomes", Sexo: "M", Data_Nascimento: "1999-08-09", Telefone: "81911110000", CPF: "66677788899",
+    CEP: "52025000", Rua: "Travessa 1", Numero: "7", Complemento: "Casa" },
+  { _id: 9, Nome: "Patrícia Nunes", Sexo: "F", Data_Nascimento: "1979-06-21", Telefone: "81900009999", CPF: "77788899900",
+    CEP: "52026000", Rua: "Avenida do Sol", Numero: "300", Complemento: "Cobertura" },
+  { _id: 10, Nome: "Felipe Rocha", Sexo: "M", Data_Nascimento: "1993-02-14", Telefone: "81999998888", CPF: "88899900011",
+    CEP: "52027000", Rua: "Rua Larga", Numero: "222", Complemento: "Apto 101" },
+  { _id: 11, Nome: "Sofia Lima", Sexo: "F", Data_Nascimento: "2001-05-05", Telefone: "81988881111", CPF: "99900011122",
+    CEP: "52028000", Rua: "Praça Nova", Numero: "12", Complemento: "" },
+  { _id: 12, Nome: "Gustavo Mendes", Sexo: "M", Data_Nascimento: "1982-10-08", Telefone: "81977770000", CPF: "10101010101",
+    CEP: "52029000", Rua: "Rua do Lazer", Numero: "55", Complemento: "Cond. A" },
+  { _id: 13, Nome: "Marcos Vieira", Sexo: "M", Data_Nascimento: "1996-01-22", Telefone: "81966660000", CPF: "20202020202",
+    CEP: "52030000", Rua: "Rua das Palmeiras", Numero: "18", Complemento: "" },
+  { _id: 14, Nome: "Isabela Fernandes", Sexo: "F", Data_Nascimento: "1994-09-09", Telefone: "81955558888", CPF: "30303030303",
+    CEP: "52031000", Rua: "Ladeira Alta", Numero: "7B", Complemento: "Bloco B" },
+  { _id: 15, Nome: "André Santos", Sexo: "M", Data_Nascimento: "1987-04-01", Telefone: "81944440001", CPF: "40404040404",
+    CEP: "52032000", Rua: "Rua do Porto", Numero: "210", Complemento: "Galpão" }
+]);
+
+// ---------------------
+// População: Clubes
+// ---------------------
+db.Clubes.insertMany([
+  { _id: 1, Nome_Fantasia: "Clube Atlântico", Telefone: "81999990000", Responsavel: "Carlos Torres", CNPJ: "11122233000199",
+    CEP: "52040000", Rua: "Rua 1", Numero: "100", Complemento: "Sede", Quantidade_Quadras: 4 },
+  { _id: 2, Nome_Fantasia: "Esporte & Lazer", Telefone: "81944440000", Responsavel: "Fernanda Lima", CNPJ: "22233344000188",
+    CEP: "52041000", Rua: "Avenida 2", Numero: "250", Complemento: "Bloco B", Quantidade_Quadras: 3 },
+  { _id: 3, Nome_Fantasia: "Clube da Vila", Telefone: "81933330000", Responsavel: "Marcelo Ribeiro", CNPJ: "33344455000177",
+    CEP: "52042000", Rua: "Rua das Acácias", Numero: "77", Complemento: "", Quantidade_Quadras: 2 },
+  { _id: 4, Nome_Fantasia: "Centro Esportivo Recife", Telefone: "81922220000", Responsavel: "Lucia Moreira", CNPJ: "44455566000166",
+    CEP: "52043000", Rua: "Praça do Esporte", Numero: "10", Complemento: "Anexo", Quantidade_Quadras: 5 },
+  { _id: 5, Nome_Fantasia: "Quadras Unidas", Telefone: "81911112222", Responsavel: "Paulo Henrique", CNPJ: "55566677000155",
+    CEP: "52044000", Rua: "Avenida Esporte", Numero: "45", Complemento: "Entrada B", Quantidade_Quadras: 3 }
+]);
+
+// ---------------------
+// População: Quadras
+// ---------------------
+// ID_Clube referencia Clubes._id
+db.Quadras.insertMany([
+  { _id: 1, Tipo: "Futsal", Capacidade: 10, Lote: "A1", ID_Clube: 1 },
+  { _id: 2, Tipo: "Vôlei", Capacidade: 12, Lote: "A2", ID_Clube: 1 },
+  { _id: 3, Tipo: "Society", Capacidade: 8, Lote: "B1", ID_Clube: 2 },
+  { _id: 4, Tipo: "Futsal", Capacidade: 10, Lote: "B2", ID_Clube: 2 },
+  { _id: 5, Tipo: "Tênis", Capacidade: 4, Lote: "C1", ID_Clube: 3 },
+  { _id: 6, Tipo: "Beach Tennis", Capacidade: 6, Lote: "C2", ID_Clube: 3 },
+  { _id: 7, Tipo: "Futsal", Capacidade: 10, Lote: "D1", ID_Clube: 4 },
+  { _id: 8, Tipo: "Basquete", Capacidade: 10, Lote: "D2", ID_Clube: 4 },
+  { _id: 9, Tipo: "Vôlei", Capacidade: 12, Lote: "E1", ID_Clube: 4 },
+  { _id: 10, Tipo: "Society", Capacidade: 8, Lote: "E2", ID_Clube: 4 },
+  { _id: 11, Tipo: "Futsal", Capacidade: 10, Lote: "F1", ID_Clube: 5 },
+  { _id: 12, Tipo: "Vôlei", Capacidade: 12, Lote: "F2", ID_Clube: 5 },
+  { _id: 13, Tipo: "Futsal", Capacidade: 10, Lote: "G1", ID_Clube: 1 },
+  { _id: 14, Tipo: "Society", Capacidade: 8, Lote: "G2", ID_Clube: 2 },
+  { _id: 15, Tipo: "Futsal", Capacidade: 10, Lote: "H1", ID_Clube: 4 }
+]);
+
+// ---------------------
+// População: Reservas
+// ---------------------
+// ID_Usuario referencia Usuarios._id
+// ID_Quadra referencia Quadras._id
+db.Reservas.insertMany([
+  { _id: 1, ID_Usuario: 1, ID_Quadra: 1, Dia: "2025-11-15", Hora_Inicial: "18:00", Hora_Final: "19:30", Tipo_Uso: "Treino" },
+  { _id: 2, ID_Usuario: 2, ID_Quadra: 2, Dia: "2025-11-16", Hora_Inicial: "20:00", Hora_Final: "22:00", Tipo_Uso: "Partida" },
+  { _id: 3, ID_Usuario: 3, ID_Quadra: 3, Dia: "2025-11-17", Hora_Inicial: "09:00", Hora_Final: "11:00", Tipo_Uso: "Aula" },
+  { _id: 4, ID_Usuario: 4, ID_Quadra: 4, Dia: "2025-11-18", Hora_Inicial: "14:00", Hora_Final: "16:00", Tipo_Uso: "Treino" },
+  { _id: 5, ID_Usuario: 5, ID_Quadra: 5, Dia: "2025-11-19", Hora_Inicial: "07:00", Hora_Final: "08:30", Tipo_Uso: "Treino" },
+  { _id: 6, ID_Usuario: 6, ID_Quadra: 6, Dia: "2025-11-20", Hora_Inicial: "19:00", Hora_Final: "21:00", Tipo_Uso: "Aula" },
+  { _id: 7, ID_Usuario: 7, ID_Quadra: 7, Dia: "2025-11-20", Hora_Inicial: "08:00", Hora_Final: "09:30", Tipo_Uso: "Treino" },
+  { _id: 8, ID_Usuario: 8, ID_Quadra: 8, Dia: "2025-11-21", Hora_Inicial: "10:00", Hora_Final: "12:00", Tipo_Uso: "Partida" },
+  { _id: 9, ID_Usuario: 9, ID_Quadra: 9, Dia: "2025-11-22", Hora_Inicial: "15:00", Hora_Final: "17:00", Tipo_Uso: "Torneio" },
+  { _id: 10, ID_Usuario: 10, ID_Quadra: 10, Dia: "2025-11-23", Hora_Inicial: "18:00", Hora_Final: "20:00", Tipo_Uso: "Treino" },
+  { _id: 11, ID_Usuario: 11, ID_Quadra: 11, Dia: "2025-11-24", Hora_Inicial: "07:30", Hora_Final: "09:00", Tipo_Uso: "Aula" },
+  { _id: 12, ID_Usuario: 12, ID_Quadra: 12, Dia: "2025-11-24", Hora_Inicial: "10:00", Hora_Final: "12:30", Tipo_Uso: "Treino" },
+  { _id: 13, ID_Usuario: 13, ID_Quadra: 13, Dia: "2025-11-25", Hora_Inicial: "16:00", Hora_Final: "18:00", Tipo_Uso: "Partida" },
+  { _id: 14, ID_Usuario: 14, ID_Quadra: 14, Dia: "2025-11-26", Hora_Inicial: "09:00", Hora_Final: "11:00", Tipo_Uso: "Treino" },
+  { _id: 15, ID_Usuario: 15, ID_Quadra: 15, Dia: "2025-11-27", Hora_Inicial: "19:30", Hora_Final: "21:00", Tipo_Uso: "Partida" },
+  { _id: 16, ID_Usuario: 1, ID_Quadra: 2, Dia: "2025-11-28", Hora_Inicial: "18:00", Hora_Final: "19:00", Tipo_Uso: "Treino" },
+  { _id: 17, ID_Usuario: 2, ID_Quadra: 1, Dia: "2025-11-28", Hora_Inicial: "19:00", Hora_Final: "20:00", Tipo_Uso: "Partida" },
+  { _id: 18, ID_Usuario: 3, ID_Quadra: 4, Dia: "2025-11-29", Hora_Inicial: "08:00", Hora_Final: "09:30", Tipo_Uso: "Treino" },
+  { _id: 19, ID_Usuario: 4, ID_Quadra: 7, Dia: "2025-11-30", Hora_Inicial: "17:00", Hora_Final: "18:30", Tipo_Uso: "Aula" },
+  { _id: 20, ID_Usuario: 5, ID_Quadra: 8, Dia: "2025-12-01", Hora_Inicial: "12:00", Hora_Final: "13:30", Tipo_Uso: "Evento" }
+]);
+
+// ---------------------
+// População: Convidados
+// ---------------------
+// Convidados possuem ID_Usuario (quem registrou o convidado) e ID_Quadra (relacionamento contextual)
+db.Convidados.insertMany([
+  { _id: 1, ID_Usuario: 1, ID_Quadra: 1, Nome: "Bruno Alves", Telefone: "81912340001" },
+  { _id: 2, ID_Usuario: 1, ID_Quadra: 1, Nome: "Clara Mendes", Telefone: "81912340002" },
+  { _id: 3, ID_Usuario: 2, ID_Quadra: 2, Nome: "Diego Pereira", Telefone: "81912340003" },
+  { _id: 4, ID_Usuario: 3, ID_Quadra: 3, Nome: "Eduarda Lima", Telefone: "81912340004" },
+  { _id: 5, ID_Usuario: 4, ID_Quadra: 4, Nome: "Fabio Rocha", Telefone: "81912340005" },
+  { _id: 6, ID_Usuario: 5, ID_Quadra: 5, Nome: "Gisele Santos", Telefone: "81912340006" },
+  { _id: 7, ID_Usuario: 6, ID_Quadra: 6, Nome: "Heitor Gomes", Telefone: "81912340007" },
+  { _id: 8, ID_Usuario: 7, ID_Quadra: 7, Nome: "Iara Freitas", Telefone: "81912340008" },
+  { _id: 9, ID_Usuario: 8, ID_Quadra: 8, Nome: "Joana Barbosa", Telefone: "81912340009" },
+  { _id: 10, ID_Usuario: 9, ID_Quadra: 9, Nome: "Kaio Martins", Telefone: "81912340010" }
+]);
+
+// ---------------------
+// População: Convites
+// ---------------------
+// Convite referencia Reserva e Convidado
+db.Convites.insertMany([
+  { _id: 1, ID_Reserva: 1, ID_Convidado: 1, Data_Envio: "2025-11-10", Status: "Enviado" },
+  { _id: 2, ID_Reserva: 1, ID_Convidado: 2, Data_Envio: "2025-11-10", Status: "Aceito" },
+  { _id: 3, ID_Reserva: 2, ID_Convidado: 3, Data_Envio: "2025-11-12", Status: "Recusado" },
+  { _id: 4, ID_Reserva: 3, ID_Convidado: 4, Data_Envio: "2025-11-13", Status: "Enviado" },
+  { _id: 5, ID_Reserva: 5, ID_Convidado: 6, Data_Envio: "2025-11-16", Status: "Aceito" },
+  { _id: 6, ID_Reserva: 6, ID_Convidado: 7, Data_Envio: "2025-11-17", Status: "Enviado" },
+  { _id: 7, ID_Reserva: 8, ID_Convidado: 9, Data_Envio: "2025-11-19", Status: "Aceito" },
+  { _id: 8, ID_Reserva: 9, ID_Convidado: 10, Data_Envio: "2025-11-20", Status: "Enviado" }
+]);
+
+// ---------------------
+// População: Avaliacoes
+// ---------------------
+// Avaliação feita por usuario sobre uma reserva
+db.Avaliacoes.insertMany([
+  { _id: 1, ID_Usuario: 1, ID_Reserva: 1, Nota: 5, Descricao: "Quadra excelente, piso bom." },
+  { _id: 2, ID_Usuario: 2, ID_Reserva: 2, Nota: 4, Descricao: "Bom espaço, luz poderia ser melhor." },
+  { _id: 3, ID_Usuario: 3, ID_Reserva: 3, Nota: 5, Descricao: "Aula muito bem organizada." },
+  { _id: 4, ID_Usuario: 5, ID_Reserva: 5, Nota: 3, Descricao: "Vestiário pequeno." },
+  { _id: 5, ID_Usuario: 9, ID_Reserva: 9, Nota: 5, Descricao: "Torneio muito bem estruturado." },
+  { _id: 6, ID_Usuario: 10, ID_Reserva: 10, Nota: 4, Descricao: "Atendimento rápido na recepção." },
+  { _id: 7, ID_Usuario: 12, ID_Reserva: 12, Nota: 4, Descricao: "Boa iluminação." },
+  { _id: 8, ID_Usuario: 15, ID_Reserva: 15, Nota: 2, Descricao: "Problema com som no local." }
+]);
+
+// ---------------------
+// População: Eventos
+// ---------------------
+// Evento referencia ID_Quadra (local do evento)
+db.Eventos.insertMany([
+  { _id: 1, Tipo: "Torneio", Data_Inicio: "2025-12-01", Data_Fim: "2025-12-03", Hora_Inicio: "08:00", Hora_Fim: "18:00",
+    Nome: "Torneio de Verão", Responsavel: "Equipe Organizadora", Telefone_Responsavel: "81911112222", ID_Quadra: 1 },
+  { _id: 2, Tipo: "Copa Interclubes", Data_Inicio: "2025-12-10", Data_Fim: "2025-12-12", Hora_Inicio: "09:00", Hora_Fim: "20:00",
+    Nome: "Copa da Cidade", Responsavel: "Comissão", Telefone_Responsavel: "81922223333", ID_Quadra: 4 },
+  { _id: 3, Tipo: "Evento Beneficente", Data_Inicio: "2025-12-20", Data_Fim: "2025-12-20", Hora_Inicio: "10:00", Hora_Fim: "15:00",
+    Nome: "Partida Solidária", Responsavel: "ONG Amigos", Telefone_Responsavel: "81933334444", ID_Quadra: 7 },
+  { _id: 4, Tipo: "Clinica", Data_Inicio: "2025-11-30", Data_Fim: "2025-11-30", Hora_Inicio: "14:00", Hora_Fim: "17:00",
+    Nome: "Clínica de Treinamento", Responsavel: "Treinador A", Telefone_Responsavel: "81944445555", ID_Quadra: 2 },
+  { _id: 5, Tipo: "Torneio", Data_Inicio: "2025-12-05", Data_Fim: "2025-12-06", Hora_Inicio: "08:00", Hora_Fim: "18:00",
+    Nome: "Mini Torneio", Responsavel: "Comissão B", Telefone_Responsavel: "81955556666", ID_Quadra: 9 }
+]);
+
+// ---------------------
+// População: Usuario_Participa_Evento
+// ---------------------
+// Registra participações de usuarios em eventos
+db.Usuario_Participa_Evento.insertMany([
+  { _id: 1, id_usuario: 3, id_evento: 1, data_participacao: "2025-12-01", status_participacao: "Presente" },
+  { _id: 2, id_usuario: 5, id_evento: 1, data_participacao: "2025-12-01", status_participacao: "Inscrito" },
+  { _id: 3, id_usuario: 9, id_evento: 1, data_participacao: "2025-12-02", status_participacao: "Presente" },
+  { _id: 4, id_usuario: 7, id_evento: 2, data_participacao: "2025-12-10", status_participacao: "Presente" },
+  { _id: 5, id_usuario: 8, id_evento: 3, data_participacao: "2025-12-20", status_participacao: "Inscrito" },
+  { _id: 6, id_usuario: 12, id_evento: 4, data_participacao: "2025-11-30", status_participacao: "Presente" },
+  { _id: 7, id_usuario: 1, id_evento: 5, data_participacao: "2025-12-05", status_participacao: "Inscrito" },
+  { _id: 8, id_usuario: 2, id_evento: 5, data_participacao: "2025-12-05", status_participacao: "Presente" }
+]);
+
+// ---------------------
+// Índices recomendados (opcional, mas útil)
+// ---------------------
+db.Usuarios.createIndex({ CPF: 1 }, { unique: true });
+db.Clubes.createIndex({ CNPJ: 1 }, { unique: true });
+db.Quadras.createIndex({ ID_Clube: 1 });
+db.Reservas.createIndex({ ID_Quadra: 1, Dia: 1, Hora_Inicial: 1 });
+db.Eventos.createIndex({ ID_Quadra: 1, Data_Inicio: 1 });
+db.Convites.createIndex({ ID_Reserva: 1 });
+db.Convidados.createIndex({ ID_Usuario: 1 });
+
+print("População completa (formato solicitado) concluída.");
+
+
+// ==================================================
+// ADIÇÃO DE MAIS DADOS (EXPANSÃO DA POPULAÇÃO)
+// ==================================================
+
+// ---------------------
+// População Adicional: Usuarios (IDs 16-20)
+// ---------------------
+db.Usuarios.insertMany([
+  { _id: 16, Nome: "Rafaela Mendes", Sexo: "F", Data_Nascimento: "1991-07-10", Telefone: "81950505050", CPF: "50505050505",
+    CEP: "52050000", Rua: "Rua da Harmonia", Numero: "300", Complemento: "Apto 1001" },
+  { _id: 17, Nome: "Lucas Oliveira", Sexo: "M", Data_Nascimento: "1980-11-25", Telefone: "81960606060", CPF: "60606060606",
+    CEP: "52051000", Rua: "Rua do Futuro", Numero: "600", Complemento: "" },
+  { _id: 18, Nome: "Juliana Barros", Sexo: "F", Data_Nascimento: "2002-03-15", Telefone: "81970707070", CPF: "70707070707",
+    CEP: "52052000", Rua: "Estrada do Arraial", Numero: "1200", Complemento: "Bloco C" },
+  { _id: 19, Nome: "Daniel Nobrega", Sexo: "M", Data_Nascimento: "1998-08-08", Telefone: "81980808080", CPF: "80808080808",
+    CEP: "52053000", Rua: "Rua do Pombal", Numero: "15", Complemento: "Casa" },
+  { _id: 20, Nome: "Beatriz Lima", Sexo: "F", Data_Nascimento: "1993-05-01", Telefone: "81990909090", CPF: "90909090909",
+    CEP: "52054000", Rua: "Avenida Parnamirim", Numero: "404", Complemento: "Apto 502" }
+]);
+
+// ---------------------
+// População Adicional: Clubes (IDs 6-7)
+// ---------------------
+db.Clubes.insertMany([
+  { _id: 6, Nome_Fantasia: "Arena Boa Viagem", Telefone: "81966667777", Responsavel: "Sérgio Montenegro", CNPJ: "66677788000144",
+    CEP: "51020000", Rua: "Avenida Boa Viagem", Numero: "1500", Complemento: "", Quantidade_Quadras: 2 },
+  { _id: 7, Nome_Fantasia: "Recife Tênis Clube", Telefone: "81977778888", Responsavel: "Amanda Costa", CNPJ: "77788899000133",
+    CEP: "51030000", Rua: "Rua do Tênis", Numero: "30", Complemento: "Anexo", Quantidade_Quadras: 3 }
+]);
+
+// ---------------------
+// População Adicional: Quadras (IDs 16-20)
+// ---------------------
+// ID_Clube referencia Clubes._id
+db.Quadras.insertMany([
+  { _id: 16, Tipo: "Futsal", Capacidade: 10, Lote: "BV1", ID_Clube: 6 },
+  { _id: 17, Tipo: "Beach Tennis", Capacidade: 6, Lote: "BV2", ID_Clube: 6 },
+  { _id: 18, Tipo: "Tênis", Capacidade: 4, Lote: "RTC1", ID_Clube: 7 },
+  { _id: 19, Tipo: "Tênis", Capacidade: 4, Lote: "RTC2", ID_Clube: 7 },
+  { _id: 20, Tipo: "Society", Capacidade: 8, Lote: "RTC3", ID_Clube: 7 }
+]);
+
+// ---------------------
+// População Adicional: Reservas (IDs 21-25)
+// ---------------------
+db.Reservas.insertMany([
+  { _id: 21, ID_Usuario: 16, ID_Quadra: 16, Dia: "2025-12-02", Hora_Inicial: "19:00", Hora_Final: "20:30", Tipo_Uso: "Partida" },
+  { _id: 22, ID_Usuario: 17, ID_Quadra: 18, Dia: "2025-12-03", Hora_Inicial: "08:00", Hora_Final: "10:00", Tipo_Uso: "Aula" },
+  { _id: 23, ID_Usuario: 18, ID_Quadra: 17, Dia: "2025-12-03", Hora_Inicial: "10:00", Hora_Final: "11:30", Tipo_Uso: "Treino" },
+  { _id: 24, ID_Usuario: 19, ID_Quadra: 19, Dia: "2025-12-04", Hora_Inicial: "15:00", Hora_Final: "17:00", Tipo_Uso: "Partida" },
+  { _id: 25, ID_Usuario: 20, ID_Quadra: 20, Dia: "2025-12-05", Hora_Inicial: "20:00", Hora_Final: "22:00", Tipo_Uso: "Treino" },
+  { _id: 26, ID_Usuario: 1, ID_Quadra: 16, Dia: "2025-12-05", Hora_Inicial: "18:00", Hora_Final: "19:00", Tipo_Uso: "Treino" }
+]);
+
+// ---------------------
+// População Adicional: Avaliacoes (IDs 9-11)
+// ---------------------
+db.Avaliacoes.insertMany([
+  { _id: 9, ID_Usuario: 16, ID_Reserva: 21, Nota: 5, Descricao: "Quadra nova, muito boa." },
+  { _id: 10, ID_Usuario: 17, ID_Reserva: 22, Nota: 4, Descricao: "Professor excelente, mas a quadra (saibro) estava um pouco molhada." },
+  { _id: 11, ID_Usuario: 18, ID_Reserva: 23, Nota: 5, Descricao: "Areia ótima, localização perfeita." }
+]);
+
+print("População adicional inserida com sucesso.");

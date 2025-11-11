@@ -1,0 +1,159 @@
+// 1) USE - selecionar DB
+use ReservaQuadras; // item 1: USE
+
+// ==================================================
+// 2) FIND - exemplos básicos de busca
+// ==================================================
+/* 2) FIND */
+db.Usuarios.find({ Sexo: "F" });                                // lista usuárias
+db.Usuarios.find({ Nome: /Silva/ }).pretty();                  // find + regex +  PRETTY (item 19)
+// 19) PRETTY usado acima: .pretty()
+
+// 3) SIZE - tamanho do resultado (formas seguras)
+const cursor = db.Reservas.find({ ID_Quadra: 1 });             // cursor
+cursor.toArray().length;                                       // item 3: SIZE (tamanho via toArray())
+// alternativa (não recomendado para produção com muitos docs):
+db.Reservas.find({ ID_Quadra: 1 }).itcount();                  // outra forma de contar resultados
+
+// 4) AGGREGATE - pipeline de agregação básico
+/* 4) AGGREGATE + 5) MATCH + 6) PROJECT + 8) GROUP + 9) SUM + 11) MAX + 12) AVG + 7) GTE */
+db.Reservas.aggregate([
+  { $match: { Dia: { $gte: "2025-11-20" } } },                 // 5) MATCH + 7) GTE
+  { $project: { ID_Usuario: 1, ID_Quadra: 1, DuracaoMin: {
+      $subtract: [
+        { $toDate: { $concat: ["$Dia","T","$Hora_Final",":00Z"] } }, // tentativa de converter (exemplo)
+        { $toDate: { $concat: ["$Dia","T","$Hora_Inicial",":00Z"] } }
+      ]
+    } } }, // 6) PROJECT (observação: depende do formato de hora)
+  { $group: {
+      _id: "$ID_Quadra",
+      totalReservas: { $sum: 1 },                               // 9) SUM
+      maxReservaDia: { $max: "$Dia" },                         // 11) MAX
+      avgDuracao: { $avg: "$DuracaoMin" }                      // 12) AVG
+  }},
+  { $sort: { totalReservas: -1 } }                             // 14) SORT
+]);
+
+// 10) COUNT (COUNTDOCUMENTS) - contagem com filter
+db.Reservas.countDocuments({ Tipo_Uso: "Treino" });            // 10) COUNTDOCUMENTS
+
+// 13) EXISTS - achar reservas com campo Hora_Final presente
+db.Reservas.find({ Hora_Final: { $exists: true } }).limit(5); // 13) EXISTS + 15) LIMIT
+
+// 14) SORT + 15) LIMIT - exemplo direto
+db.Usuarios.find().sort({ Nome: 1 }).limit(10);                // ordena por nome e limita a 10
+
+// 16) $WHERE - usa JavaScript (CUIDADO: lento)
+// busca usuários com nome maior que 12 caracteres
+db.Usuarios.find({ $where: "this.Nome && this.Nome.length > 12" }); // 16) $WHERE
+
+// 17) MAPREDUCE - exemplo: contar reservas por dia
+var map = function() { emit(this.Dia, 1); };
+var reduce = function(key, values) { return Array.sum(values); };
+db.Reservas.mapReduce(map, reduce, { out: "reserva_por_dia" });   // 17) MAPREDUCE
+db.reserva_por_dia.find().sort({ value: -1 }).limit(5);
+
+// 18) FUNCTION - salvar função no servidor e usar
+db.system.js.save({
+  _id: "getNomeUsuario",
+  value: function(id) {
+    var u = db.Usuarios.findOne({ _id: id });
+    return u ? u.Nome : null;
+  }
+}); // salva a função
+// carregar e usar (em um shell que suporte loadServerScripts)
+db.loadServerScripts();
+getNomeUsuario(1); // 18) FUNCTION
+
+// 19) PRETTY - já usado acima com .pretty()
+
+// 20) ALL - operador $all para arrays (exemplo genérico)
+// suponha que Clubes tivesse um campo "Esportes": ["Futsal","Vôlei"]
+// Demonstração genérica:
+db.Clubes.find({ Esportes: { $all: ["Futsal", "Vôlei"] } });   // 20) ALL
+
+// 21) SET - atualização com $set
+db.Usuarios.updateOne({ _id: 1 }, { $set: { Telefone: "81900000001" } }); // 21) SET
+
+// 22) TEXT - criar índice texto e buscar por texto
+db.Clubes.createIndex({ Nome_Fantasia: "text", Responsavel: "text" }); // 22) TEXT (criar índice)
+db.Clubes.find({ $text: { $search: "Atlântico" } });                  // busca por texto
+
+// 23) SEARCH - nota: $search é do Atlas Search (Se usar Atlas, ex.: agregação com $search)
+// Exemplo de uso se estiver em Atlas (comentário):
+/*
+db.Clubes.aggregate([
+  { $search: { text: { query: "Atlântico", path: ["Nome_Fantasia","Responsavel"] } } },
+  { $limit: 5 }
+]);
+*/
+// 23) SEARCH -> se for Atlas Search, usar $search no pipeline de agregação
+
+// 24) FILTER - usar $filter em projeção para filtrar um array
+// exemplo usando um array literal só para demonstração
+db.Clubes.aggregate([
+  { $project: {
+      Nome_Fantasia: 1,
+      esportesFiltrados: { $filter: {
+        input: ["Futsal","Vôlei","Tênis"], // exemplo; troque por campo real se existir
+        as: "e",
+        cond: { $ne: ["$$e", "Tênis"] }
+      } }
+    } }
+]); // 24) FILTER
+
+// 25) UPDATE (updateOne / updateMany)
+db.Reservas.updateOne({ _id: 1 }, { $set: { Tipo_Uso: "Treino/Partida" } });        // updateOne
+db.Reservas.updateMany({ Dia: "2025-11-24" }, { $set: { Tipo_Uso: "Treino" } });    // updateMany
+
+// 26) SAVE (updateOne/insertOne) - simular SAVE: atualizar se existe, senão inserir
+// Em mongo moderno: upsert com updateOne
+db.Usuarios.updateOne(
+  { _id: 99 },
+  { $set: { Nome: "Usuário Novo", CPF: "99999999999" } },
+  { upsert: true }
+); // 26) SAVE via upsert (equivalente a updateOne/insertOne)
+
+// 27) RENAMECOLLECTION - renomear coleção
+// db.Clubes.renameCollection("Clubes_Arquivados"); // 27) RENAMECOLLECTION (descomente para executar)
+
+// 28) COND - usar $cond em projeção
+db.Usuarios.aggregate([
+  { $project: {
+      Nome: 1,
+      ehAdulto: { $cond: [{ $gte: [ { $substr: ["$Data_Nascimento",0,4] }, "2007" ] }, true, false] }
+  } }
+]); // 28) COND (exemplo simples; ajustar lógica de data conforme formato real)
+
+// 29) LOOKUP - join entre Reservas e Usuarios
+db.Reservas.aggregate([
+  { $match: { Dia: "2025-11-15" } },
+  { $lookup: {
+      from: "Usuarios",
+      localField: "ID_Usuario",
+      foreignField: "_id",
+      as: "usuarioInfo"
+  }},
+  { $unwind: "$usuarioInfo" },
+  { $project: { ID_Quadra:1, Dia:1, Hora_Inicial:1, "usuarioInfo.Nome":1, "usuarioInfo.Telefone":1 } }
+]); // 29) LOOKUP
+
+// 30) FINDONE - buscar um documento
+db.Usuarios.findOne({ CPF: "12345678901" }); // 30) FINDONE
+
+// 31) ADDTOSET - adicionar a um array sem duplicar (ex.: adicionar tag a Clube)
+db.Clubes.updateOne({ _id: 1 }, { $addToSet: { tags: "esporte" } }); // 31) ADDTOSET
+
+// -------------------------------------------------------------
+// Exemplos adicionais úteis combinando itens:
+// - Ex.: agregação com MATCH, LOOKUP, GROUP e SORT
+db.Reservas.aggregate([
+  { $match: { Dia: { $gte: "2025-11-15", $lte: "2025-12-01" } } }, // MATCH + GTE
+  { $lookup: { from: "Quadras", localField: "ID_Quadra", foreignField: "_id", as: "quadra" } }, // LOOKUP
+  { $unwind: "$quadra" },
+  { $group: { _id: "$quadra.Tipo", total: { $sum: 1 }, mediaNota: { $avg: "$Nota" } } }, // GROUP + SUM + AVG
+  { $sort: { total: -1 } },
+  { $limit: 10 } // LIMIT
+]);
+
+
