@@ -12,9 +12,7 @@ DROP TABLE IF EXISTS stg_iluminacao_unificada;
 
 CREATE TABLE stg_iluminacao_unificada AS
 
--- =======================
 -- BASE 2023
--- =======================
 SELECT
     id_ponto::TEXT,
     sequencia::TEXT,
@@ -22,8 +20,8 @@ SELECT
     localizaca::TEXT AS localizacao,
     endereco::TEXT,
     barramento::TEXT AS barramento,
-    longitude:: TEXT,
-    latitude:: TEXT,
+    longitude::TEXT,
+    latitude::TEXT,
     bairro::TEXT,
     medicao::TEXT,
     tipo_lumin::TEXT,
@@ -40,9 +38,7 @@ FROM stg_iluminacao_2023
 
 UNION ALL
 
--- =======================
 -- BASE 2024
--- =======================
 SELECT
     id_ponto::TEXT,
     sequencia::TEXT,
@@ -68,9 +64,7 @@ FROM stg_iluminacao_2024
 
 UNION ALL
 
--- =======================
 -- BASE 2025
--- =======================
 SELECT
     id_ponto::TEXT,
     sequencia::TEXT,
@@ -93,8 +87,7 @@ SELECT
     consumo_kw::TEXT AS consumo_kwh,
     total_carg::TEXT AS total_carga
 FROM stg_iluminacao_2025;
-    
 
--- Log básico de conferência da T1
+-- LOG
 SELECT COUNT(*) AS total_unificado
 FROM stg_iluminacao_unificada;
