@@ -1,0 +1,1 @@
+SELECT* FROM postes_sem_duplicatas_sem_id where localizacao is null
