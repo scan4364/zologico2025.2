@@ -1,3 +1,8 @@
+-- Transformação 3
+-- Autor: Thales
+-- A T3 foi dividida em 3 partes porque estava crashando com todas as etapas juntas
+-- Objetivo: padronização de colunas
+
 DROP TABLE IF EXISTS stg_t3_step1;
 
 CREATE TABLE stg_t3_step1 AS
@@ -21,3 +26,4 @@ SELECT
     consumo_kwh,
     total_carga
 FROM postes_historico;
+
