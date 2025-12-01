@@ -1,5 +1,6 @@
 
 -- CONSULTAR DUPLICATAS DESCONSIDERANDO id_ponto
+-- Consulta feita para analisar o que seria feito na parte de deduplicação da T2 
 
 
 SELECT 
@@ -42,3 +43,4 @@ GROUP BY
     total_carga
 HAVING COUNT(*) > 1
 ORDER BY qtd_duplicada DESC;
+
