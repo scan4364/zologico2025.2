@@ -1,0 +1,82 @@
+
+-- 1. CRIAÇÃO DO ESQUEMA PARA ORGANIZAÇÃO DO DATA WAREHOUSE
+CREATE SCHEMA IF NOT EXISTS dw_iluminacao;
+
+
+-- 2. CRIAÇÃO DAS DIMENSÕES
+
+-- DIMENSÃO: POSTE/EQUIPAMENTO
+-- PK: id_poste_sk
+CREATE TABLE dw_iluminacao.dim_poste (
+    id_poste_sk SERIAL PRIMARY KEY,
+    id_ponto VARCHAR(50) NOT NULL,
+    sequencia INTEGER NOT NULL,
+    tipo_lumin VARCHAR(100),
+    tipo_de_poste VARCHAR(50),
+    tipo_lampada VARCHAR(50),
+    barramento VARCHAR(50),
+    medicao VARCHAR(5)
+);
+
+-- DIMENSÃO: LOCALIDADE
+-- PK: id_localidade_sk
+CREATE TABLE dw_iluminacao.dim_localidade (
+    id_localidade_sk SERIAL PRIMARY KEY,
+    rpa INTEGER,
+    bairro VARCHAR(100),
+    endereco VARCHAR(255),
+    localizacao VARCHAR(50)
+);
+
+-- DIMENSÃO: TEMPO
+-- PK: id_tempo_sk
+CREATE TABLE dw_iluminacao.dim_tempo (
+    id_tempo_sk SERIAL PRIMARY KEY,
+    data_modernizacao_led VARCHAR(50) NOT NULL, -- Mantido como string/varchar para o valor 'NAO_REGISTRADO'
+    dia INTEGER,
+    mes INTEGER,
+    ano INTEGER,
+    trimestre INTEGER,
+    dia_semana VARCHAR(20)
+);
+
+-- DIMENSÃO: ORIGEM
+-- PK: id_origem_sk
+CREATE TABLE dw_iluminacao.dim_origem (
+    id_origem_sk SERIAL PRIMARY KEY,
+    ano_original INTEGER NOT NULL,
+    descricao_origem VARCHAR(100)
+);
+
+
+-- 3. CRIAÇÃO DA TABELA FATO
+
+
+-- TABELA: FATO_ILUMINACAO
+-- PK: id_fato_sk
+-- FKs: id_poste_sk, id_localidade_sk, id_tempo_sk, id_origem_sk
+CREATE TABLE dw_iluminacao.fato_iluminacao (
+    id_fato_sk SERIAL PRIMARY KEY,
+
+    -- CHAVES ESTRANGEIRAS
+    id_poste_sk INTEGER NOT NULL REFERENCES dw_iluminacao.dim_poste (id_poste_sk),
+    id_localidade_sk INTEGER NOT NULL REFERENCES dw_iluminacao.dim_localidade (id_localidade_sk),
+    id_tempo_sk INTEGER NOT NULL REFERENCES dw_iluminacao.dim_tempo (id_tempo_sk),
+    id_origem_sk INTEGER NOT NULL REFERENCES dw_iluminacao.dim_origem (id_origem_sk),
+
+    -- MÉTRICAS
+    qtde INTEGER NOT NULL,
+    potencia NUMERIC(10, 2) NOT NULL,
+    perdas NUMERIC(10, 2) NOT NULL,
+    total_carga NUMERIC(10, 2) NOT NULL,
+    consumo_kwh NUMERIC(10, 2) NOT NULL
+);
+
+
+-- 4. CRIAÇÃO DE ÍNDICES
+-- Índices nas FKs são cruciais para performance de consultas 
+CREATE INDEX idx_fato_poste_fk ON dw_iluminacao.fato_iluminacao (id_poste_sk);
+CREATE INDEX idx_fato_localidade_fk ON dw_iluminacao.fato_iluminacao (id_localidade_sk);
+CREATE INDEX idx_fato_tempo_fk ON dw_iluminacao.fato_iluminacao (id_tempo_sk);
+CREATE INDEX idx_fato_origem_fk ON dw_iluminacao.fato_iluminacao (id_origem_sk);
+
