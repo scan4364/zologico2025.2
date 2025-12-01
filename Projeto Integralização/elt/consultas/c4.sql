@@ -1,14 +1,11 @@
--- ============================================================
 -- DIAGNÓSTICO T2 — Avaliação da Qualidade dos Dados
 -- Esta consulta gera todas as evidências para tratamento de dados
 -- inconsistentes
--- ============================================================
 
 
--- ============================================================
+
+
 -- 1) Avaliar id_ponto inválido (NULL, vazio, 0.0)
--- ============================================================
-
 SELECT
     COUNT(*) FILTER (WHERE id_ponto IS NULL) AS id_nulos,
     COUNT(*) FILTER (WHERE TRIM(id_ponto) = '') AS id_vazios,
@@ -16,9 +13,8 @@ SELECT
 FROM stg_iluminacao_unificada;
 
 
--- ============================================================
+
 -- 2) Avaliar latitude/longitude — nulos, vazios, formatos ruins
--- ============================================================
 
 SELECT
     COUNT(*) FILTER (WHERE latitude IS NULL OR TRIM(latitude) = '') AS lat_nulas_ou_vazias,
@@ -28,9 +24,8 @@ SELECT
 FROM stg_iluminacao_unificada;
 
 
--- ============================================================
+
 -- 3) Avaliar "sequencia" — valores nulos, vazios ou não-numéricos
--- ============================================================
 
 SELECT
     COUNT(*) FILTER (WHERE sequencia IS NULL) AS seq_nulos,
@@ -39,9 +34,8 @@ SELECT
 FROM stg_iluminacao_unificada;
 
 
--- ============================================================
+
 -- 4) Verificar nulos em data_atualizacao
--- ============================================================
 
 SELECT
     COUNT(*) FILTER (WHERE data_atualizacao IS NULL OR TRIM(data_atualizacao) = '') AS data_atualizacao_nulos,
@@ -49,9 +43,8 @@ SELECT
 FROM stg_iluminacao_unificada;
 
 
--- ============================================================
+
 -- 5) Verificar duplicatas por ano (100% idênticas)
--- ============================================================
 
 SELECT
     ano_original,
@@ -80,10 +73,8 @@ GROUP BY ano_original
 ORDER BY ano_original;
 
 
--- ============================================================
--- 6) Log geral de completude — contagem de nulos por coluna
--- ============================================================
 
+-- 6) Log geral de completude — contagem de nulos por coluna
 SELECT
     COUNT(*) FILTER (WHERE id_ponto IS NULL) AS nulos_id_ponto,
     COUNT(*) FILTER (WHERE sequencia IS NULL) AS nulos_sequencia,
@@ -102,4 +93,5 @@ SELECT
     COUNT(*) FILTER (WHERE data_atualizacao IS NULL) AS nulos_data_atualizacao,
     COUNT(*) FILTER (WHERE consumo_kwh IS NULL) AS nulos_consumo_kwh,
     COUNT(*) FILTER (WHERE total_carga IS NULL) AS nulos_total_carga
+
 FROM stg_iluminacao_unificada;
