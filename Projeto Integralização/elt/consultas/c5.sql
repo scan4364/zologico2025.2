@@ -1,3 +1,5 @@
+-- Consulta para valores distintos sem ser nulo, para controle interno
+
 SELECT 'localizacao'   AS coluna, localizacao AS valor
 FROM (
   SELECT DISTINCT localizacao
@@ -33,3 +35,4 @@ FROM (
 ) t
 
 ORDER BY coluna, valor;
+
