@@ -1,3 +1,6 @@
+-- Consulta feita para analisar os valores únicos das variáveis categóricas com inconsistência.
+-- Essa consulta foi feita de motivação para a T3 de padronização de valores
+
 SELECT 'localizacao' AS coluna, localizacao AS valor
 FROM postes_historico
 GROUP BY localizacao
@@ -19,5 +22,6 @@ UNION ALL
 SELECT 'tipo_lampa' AS coluna, tipo_lampa AS valor
 FROM postes_historico
 GROUP BY tipo_lampa
+
 
 ORDER BY coluna, valor;
