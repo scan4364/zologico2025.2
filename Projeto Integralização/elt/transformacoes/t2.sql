@@ -1,12 +1,11 @@
--- ============================================================
 -- TRANSFORMAÇÃO 2 (T2)
--- Compatível com PostgreSQL/Supabase
--- ============================================================
+-- Autora: Mariana
+-- Objetivos: remoção de ids inválidos, remoçãao de longitude, latitude e bloq_amp (muitas linhas nulas), Corrigir sequencia usando mediana
+-- padronização de datas e remoção de duplicados
 
 
----------------------------------------------------------------
 -- 1) Remover IDs inválidos
----------------------------------------------------------------
+
 DROP TABLE IF EXISTS stg_t2_validos;
 
 CREATE TABLE stg_t2_validos AS
@@ -17,10 +16,8 @@ WHERE id_ponto IS NOT NULL
   AND id_ponto::float <> 0.0;
 
 
-
----------------------------------------------------------------
 -- 2) Remover latitude, longitude e bloq_amp
----------------------------------------------------------------
+
 DROP TABLE IF EXISTS stg_t2_sem_geo;
 
 CREATE TABLE stg_t2_sem_geo AS
@@ -47,9 +44,9 @@ FROM stg_t2_validos;
 
 
 
----------------------------------------------------------------
+
 -- 2.5) Preencher campos opcionais com 'NAO INFORMADO'
----------------------------------------------------------------
+
 UPDATE stg_t2_sem_geo
 SET 
     tipo_de_poste = COALESCE(NULLIF(tipo_de_poste, ''), 'NAO INFORMADO'),
@@ -57,10 +54,8 @@ SET
     barramento    = COALESCE(NULLIF(barramento, ''), 'NAO INFORMADO');
 
 
-
----------------------------------------------------------------
 -- 3) Corrigir sequencia usando mediana
----------------------------------------------------------------
+
 DROP TABLE IF EXISTS stg_t2_seq_corrigida;
 
 CREATE TABLE stg_t2_seq_corrigida AS
@@ -94,9 +89,8 @@ FROM stg_t2_sem_geo;
 
 
 
----------------------------------------------------------------
 -- 4) Padronizar data_atualizacao
----------------------------------------------------------------
+
 DROP TABLE IF EXISTS stg_t2_data_corrigida;
 
 CREATE TABLE stg_t2_data_corrigida AS
@@ -123,10 +117,10 @@ FROM stg_t2_seq_corrigida;
 
 
 
----------------------------------------------------------------
+
 -- 5) Deduplicação REAL (sem considerar id_ponto)
 -- Mantendo o ID original (ROW_NUMBER)
----------------------------------------------------------------
+
 DROP TABLE IF EXISTS postes_historico;
 
 CREATE TABLE postes_historico AS
@@ -152,7 +146,7 @@ WITH grupos AS (
                 data_atualizacao,
                 consumo_kwh,
                 total_carga
-            ORDER BY id_ponto  -- mantém o menor id_ponto do grupo
+            ORDER BY id_ponto  
         ) AS ordem
     FROM stg_t2_data_corrigida
 )
@@ -176,4 +170,5 @@ SELECT
     consumo_kwh,
     total_carga
 FROM grupos
+
 WHERE ordem = 1;   
