@@ -155,5 +155,3 @@ db.Reservas.aggregate([
   { $sort: { total: -1 } },
   { $limit: 10 } // LIMIT
 ]);
-
-
