@@ -1,4 +1,4 @@
-// Banco: ReservaQuadras (mesmo estilo do seu exemplo)
+// Banco: ReservaQuadras 
 db = db.getSiblingDB("ReservaQuadras");
 
 // --- Cria coleções (opcional) ---
